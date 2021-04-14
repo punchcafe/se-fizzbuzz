@@ -17,7 +17,7 @@ defmodule ApiWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    get "/fizzbuzz/:ids", FizzBuzzController, :get
+    get "/fizzbuzz/:id", FizzBuzzController, :get
   end
 
   # Other scopes may use custom stacks.
