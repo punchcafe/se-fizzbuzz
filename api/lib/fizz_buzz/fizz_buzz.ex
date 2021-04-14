@@ -1,6 +1,10 @@
 defmodule FizzBuzz do
-    
-    def fizz_buzz(number) do
+
+    def fizz_buzz(number) when number <= 0 do
+        raise "Number must be greater than 0"
+    end
+
+    def fizz_buzz(number) when number > 0 do
         %{:number => number, :string_val => ""}
         |> concat_if_multiple_of("Fizz", 3)
         |> concat_if_multiple_of("Buzz", 5)

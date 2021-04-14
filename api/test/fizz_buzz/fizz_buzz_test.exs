@@ -1,8 +1,12 @@
 defmodule FizzBuzz.Test do
   use ExUnit.Case
 
-  test "should return empty on 0" do
-    assert FizzBuzz.fizz_buzz(0) == ""
+  test "should throw a runtime exception on 0" do
+    assert_raise RuntimeError, fn () -> FizzBuzz.fizz_buzz(0) end
+  end
+
+  test "should throw a runtime exception on less than 0" do
+    assert_raise RuntimeError, fn () -> FizzBuzz.fizz_buzz(-1) end
   end
 
   test "should return empty on 1" do
