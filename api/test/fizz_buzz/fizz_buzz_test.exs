@@ -9,12 +9,12 @@ defmodule FizzBuzz.Test do
     assert_raise RuntimeError, fn () -> FizzBuzz.fizz_buzz(-1) end
   end
 
-  test "should return empty on 1" do
-    assert FizzBuzz.fizz_buzz(1) == ""
+  test "should return number on 1" do
+    assert FizzBuzz.fizz_buzz(1) == "1"
   end
 
-  test "should return empty on 299" do
-    assert FizzBuzz.fizz_buzz(299) == ""
+  test "should return number on 299" do
+    assert FizzBuzz.fizz_buzz(299) == "299"
   end
 
   test "should return Fizz on 3" do

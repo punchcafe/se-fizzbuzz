@@ -8,14 +8,14 @@ defmodule FizzBuzz do
         %{:number => number, :string_val => ""}
         |> concat_if_multiple_of("Fizz", 3)
         |> concat_if_multiple_of("Buzz", 5)
-        |> Map.get(:string_val)
+        |> number_if_string_empty()
     end
 
     defp concat_if_multiple_of(%{number: number, string_val: string_val} = map, catstring, factor) do
-        if rem(number, factor) == 0 do
-            %{ :number => div(number,factor), :string_val => string_val <> catstring }
-        else
-            map
-        end
+        if rem(number, factor) == 0, do: %{ map | :string_val => string_val <> catstring }, else: map
+    end
+
+    defp number_if_string_empty(%{number: number, string_val: string_val}) do
+        if string_val == "", do: Integer.to_string(number), else: string_val
     end
 end
