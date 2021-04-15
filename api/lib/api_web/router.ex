@@ -14,10 +14,10 @@ defmodule ApiWeb.Router do
   end
 
   scope "/", ApiWeb do
-    pipe_through :browser
 
     get "/", PageController, :index
     get "/fizzbuzz/:id", FizzBuzzController, :get
+    put "/fizzbuzz/:id", FizzBuzzController, :put
   end
 
   # Other scopes may use custom stacks.
