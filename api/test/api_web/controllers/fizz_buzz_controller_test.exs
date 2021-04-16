@@ -22,10 +22,35 @@ defmodule ApiWeb.FizzBuzzControllerTest do
     assert body["id"] == 5
   end
 
-    test "GET /fizzbuzz/15", %{conn: conn} do
+  test "GET /fizzbuzz/15", %{conn: conn} do
     conn = get(conn, "/fizzbuzz/15")
     body = json_response(conn, 200)
     assert body["value"] == "FizzBuzz"
     assert body["id"] == 15
+  end
+
+  test "GET /fizzbuzz/15: fizzbuzz should be unfavourited by default", %{conn: conn} do
+    conn = get(conn, "/fizzbuzz/15")
+    body = json_response(conn, 200)
+    assert body["value"] == "FizzBuzz"
+    assert body["id"] == 15
+    assert body["is_favourite"] == false
+  end
+
+  test "PUT /fizzbuzz/15: should favorite fizz buzz", %{conn: conn} do
+    conn = put(conn, "/fizzbuzz/15", %{is_favourite: true})
+    body = json_response(conn, 200)
+    assert body["value"] == "FizzBuzz"
+    assert body["id"] == 15
+    assert body["is_favourite"] == true
+  end
+
+  test "PUT /fizzbuzz/15: should unfavourite selected fizz buzz", %{conn: conn} do
+    put(conn, "/fizzbuzz/15", %{is_favourite: true})
+    conn = put(conn, "/fizzbuzz/15", %{is_favourite: false})
+    body = json_response(conn, 200)
+    assert body["value"] == "FizzBuzz"
+    assert body["id"] == 15
+    assert body["is_favourite"] == false
   end
 end
