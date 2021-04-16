@@ -54,6 +54,25 @@ defmodule ApiWeb.FizzBuzzControllerTest do
     assert data == expected_data
   end
 
+  test "GET /fizzbuzz: paginated data contains favourite data", %{conn: conn} do
+    put(conn, "/fizzbuzz/1", %{is_favourite: true})
+    put(conn, "/fizzbuzz/3", %{is_favourite: true})
+    conn = get(conn, "/fizzbuzz")
+    body = json_response(conn, 200)
+    data = body["data"]
+    page = body["page"]
+
+    expected_data = [%{"id" => 1, "value" => "1", "is_favourite" => true},
+                     %{"id" => 2, "value" => "2", "is_favourite" => false},
+                     %{"id" => 3, "value" => "Fizz", "is_favourite" => true},
+                     %{"id" => 4, "value" => "4", "is_favourite" => false},
+                     %{"id" => 5, "value" => "Buzz", "is_favourite" => false}]
+
+    assert page["page_number"] == 1
+    assert page["page_size"] == 5
+    assert data == expected_data
+  end
+
   test "GET /fizzbuzz: returns first page when no page number provided", %{conn: conn} do
     conn = get(conn, "/fizzbuzz?page_size=3")
     body = json_response(conn, 200)
