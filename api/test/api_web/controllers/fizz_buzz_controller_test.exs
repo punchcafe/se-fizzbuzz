@@ -37,6 +37,38 @@ defmodule ApiWeb.FizzBuzzControllerTest do
     assert body["is_favourite"] == false
   end
 
+  test "GET /fizzbuzz: returns first page of default size", %{conn: conn} do
+    conn = get(conn, "/fizzbuzz")
+    body = json_response(conn, 200)
+    data = body["data"]
+    page = body["page"]
+
+    expected_data = [%{id: 1, value: "1", is_favourite: false},
+                     %{id: 2, value: "2", is_favourite: false},
+                     %{id: 3, value: "Fizz", is_favourite: false},
+                     %{id: 4, value: "4", is_favourite: false},
+                     %{id: 5, value: "Buzz", is_favourite: false}]
+
+    assert page["page_number"] == 1
+    assert page["page_size"] == 5
+    assert data == expected_data
+  end
+
+  test "GET /fizzbuzz: can return specific page of specific size", %{conn: conn} do
+    conn = get(conn, "/fizzbuzz?page_size=3&page_number=2")
+    body = json_response(conn, 200)
+    data = body["data"]
+    page = body["page"]
+
+    expected_data = [%{id: 4, value: "4", is_favourite: false},
+                     %{id: 5, value: "Buzz", is_favourite: false},
+                     %{id: 5, value: "Fizz", is_favourite: false}]
+
+    assert page["page_number"] == 1
+    assert page["page_size"] == 5
+    assert data == expected_data
+  end
+
   test "PUT /fizzbuzz/15: should favorite fizz buzz", %{conn: conn} do
     conn = put(conn, "/fizzbuzz/15", %{is_favourite: true})
     body = json_response(conn, 200)
