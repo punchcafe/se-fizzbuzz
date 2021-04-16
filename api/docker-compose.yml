@@ -2,7 +2,19 @@ version: '3.1'
 
 services:
 
-  db:
+  app:
+    build: .
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+    environment:
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: api_dev
+      DB_HOST: postgres
+      DATABASE_URL: ecto://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}
+  postgres:
     image: postgres
     restart: always
     ports:
