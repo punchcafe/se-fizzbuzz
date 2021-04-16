@@ -6,7 +6,7 @@ defmodule ApiWeb.FizzBuzzController do
   def get(conn, %{"id" => id}) do
     fizz_buzz = String.to_integer(id)
     |> FizzBuzz.Services.get_fizz_buzz()
-    json(conn, fizz_buzz)
+    |> return_fizz_buzz_as_json(conn)
   end
 
   def put(conn, %{"is_favourite" => is_favourite, "id" => id}) do
@@ -16,6 +16,10 @@ defmodule ApiWeb.FizzBuzzController do
     else
       FizzBuzz.Services.unfavourite_fizz_buzz(number_id)
     end
-    json(conn, %{:value => FizzBuzz.fizz_buzz(number_id), :id => number_id, :is_favourite => is_favourite})
+    |> return_fizz_buzz_as_json(conn)
+  end
+
+  defp return_fizz_buzz_as_json(fizz_buzz, conn) do
+    json(conn, fizz_buzz)
   end
 end

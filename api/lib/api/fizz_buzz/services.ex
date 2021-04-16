@@ -9,9 +9,11 @@ defmodule FizzBuzz.Services do
 
     def favourite_fizz_buzz(fizz_buzz_id) do
         Api.Repo.insert(%Api.Favourite{fizz_buzz_id: fizz_buzz_id})
+        %{:value => FizzBuzz.fizz_buzz(fizz_buzz_id), :id => fizz_buzz_id, :is_favourite => true}
     end
 
     def unfavourite_fizz_buzz(fizz_buzz_id) do
         Api.Repo.delete(%Api.Favourite{fizz_buzz_id: fizz_buzz_id})
+        %{:value => FizzBuzz.fizz_buzz(fizz_buzz_id), :id => fizz_buzz_id, :is_favourite => false}
     end
 end
