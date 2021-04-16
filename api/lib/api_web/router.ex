@@ -16,6 +16,7 @@ defmodule ApiWeb.Router do
   scope "/", ApiWeb do
 
     get "/", PageController, :index
+    get "/fizzbuzz", FizzBuzzController, :paginate
     get "/fizzbuzz/:id", FizzBuzzController, :get
     put "/fizzbuzz/:id", FizzBuzzController, :put
   end

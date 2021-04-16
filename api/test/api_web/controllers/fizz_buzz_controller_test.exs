@@ -43,11 +43,11 @@ defmodule ApiWeb.FizzBuzzControllerTest do
     data = body["data"]
     page = body["page"]
 
-    expected_data = [%{id: 1, value: "1", is_favourite: false},
-                     %{id: 2, value: "2", is_favourite: false},
-                     %{id: 3, value: "Fizz", is_favourite: false},
-                     %{id: 4, value: "4", is_favourite: false},
-                     %{id: 5, value: "Buzz", is_favourite: false}]
+    expected_data = [%{"id" => 1, "value" => "1", "is_favourite" => false},
+                     %{"id" => 2, "value" => "2", "is_favourite" => false},
+                     %{"id" => 3, "value" => "Fizz", "is_favourite" => false},
+                     %{"id" => 4, "value" => "4", "is_favourite" => false},
+                     %{"id" => 5, "value" => "Buzz", "is_favourite" => false}]
 
     assert page["page_number"] == 1
     assert page["page_size"] == 5
@@ -60,12 +60,12 @@ defmodule ApiWeb.FizzBuzzControllerTest do
     data = body["data"]
     page = body["page"]
 
-    expected_data = [%{id: 4, value: "4", is_favourite: false},
-                     %{id: 5, value: "Buzz", is_favourite: false},
-                     %{id: 5, value: "Fizz", is_favourite: false}]
+    expected_data = [%{"id" => 4, "value" => "4", "is_favourite" => false},
+                     %{"id" => 5, "value" => "Buzz", "is_favourite" => false},
+                     %{"id" => 6, "value" => "Fizz", "is_favourite" => false}]
 
-    assert page["page_number"] == 1
-    assert page["page_size"] == 5
+    assert page["page_number"] == 2
+    assert page["page_size"] == 3
     assert data == expected_data
   end
 
