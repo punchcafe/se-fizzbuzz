@@ -20,13 +20,18 @@ defmodule FizzBuzz.Services do
     def page_fizz_buzz(page_number, page_size) do
       start_index = (page_size * (page_number - 1)) + 1
       if start_index > @fizz_buzz_max, do: raise FizzBuzzPageNotFoundError
+
       end_index_inclusive = start_index + page_size - 1
       |> clamp_to_max_fizz_buzz_id()
+
+      has_next_page = end_index_inclusive < @fizz_buzz_max
+      has_previous_page = start_index > 1
+
       favourite_ids = find_favourites_in_range(start_index, end_index_inclusive)
       data = start_index..end_index_inclusive
       |> Enum.map(fn fizz_buzz_id -> %{:value => FizzBuzz.fizz_buzz(fizz_buzz_id), :id => fizz_buzz_id, :is_favourite => false} end)
       |> Enum.map(fn fizz_buzz -> apply_favourite_status(fizz_buzz, favourite_ids) end)
-      %{data: data, page: %{ page_size: page_size, page_number: page_number }}
+      %{data: data, page: %{ page_size: page_size, page_number: page_number, has_next_page: has_next_page, has_previous_page: has_previous_page }}
     end
 
     def favourite_fizz_buzz(fizz_buzz_id) when fizz_buzz_id < 1 or fizz_buzz_id > @fizz_buzz_max do

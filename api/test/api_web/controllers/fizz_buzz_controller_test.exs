@@ -6,7 +6,6 @@ defmodule ApiWeb.FizzBuzzControllerTest do
     assert message == "\"Not Found\""
     assert Enum.at(headers,0) == {"content-type", "application/json; charset=utf-8"}
   end
-  # TODO: Page out of range 1-100_000_000 -> 404
 
   test "GET /fizzbuzz/0: should raise 404", %{conn: conn} do
     {code, headers, message} = assert_error_sent 404, fn () -> get(conn, "/fizzbuzz/0") end
@@ -76,6 +75,39 @@ defmodule ApiWeb.FizzBuzzControllerTest do
     assert page["page_number"] == 1
     assert page["page_size"] == 5
     assert data == expected_data
+  end
+
+  test "GET /fizzbuzz?page_number=1: should have next page but not previous page", %{conn: conn} do
+    conn = get(conn, "/fizzbuzz?page_number=1")
+    body = json_response(conn, 200)
+    page = body["page"]
+
+    assert page["page_number"] == 1
+    assert page["page_size"] == 5
+    assert page["has_next_page"] == true
+    assert page["has_previous_page"] == false
+  end
+
+  test "GET /fizzbuzz?page_number=2: should have next page and previous page", %{conn: conn} do
+    conn = get(conn, "/fizzbuzz?page_number=2")
+    body = json_response(conn, 200)
+    page = body["page"]
+
+    assert page["page_number"] == 2
+    assert page["page_size"] == 5
+    assert page["has_next_page"] == true
+    assert page["has_previous_page"] == true
+  end
+
+  test "GET /fizzbuzz: last page should not have next page", %{conn: conn} do
+    conn = get(conn, "/fizzbuzz?page_size=3&page_number=33333334")
+    body = json_response(conn, 200)
+    page = body["page"]
+
+    assert page["page_number"] == 33333334
+    assert page["page_size"] == 3
+    assert page["has_next_page"] == false
+    assert page["has_previous_page"] == true
   end
 
   test "GET /fizzbuzz?page_size=0: returns 400 for page size too small", %{conn: conn} do
