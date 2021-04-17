@@ -14,7 +14,7 @@ config :api,
 config :api, ApiWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "j+2mXhy9umyZABRYsUgeNP+AfRKeCGZ1OaILBQqWPJPsXgpJCAIqN7J1ag6nCAFL",
-  render_errors: [view: ApiWeb.ErrorView, accepts: ~w(html json), layout: false],
+  render_errors: [view: ApiWeb.ErrorView, format: "json", accepts: ~w(json), layout: false],
   pubsub_server: Api.PubSub,
   live_view: [signing_salt: "kL+MqfHg"]
 

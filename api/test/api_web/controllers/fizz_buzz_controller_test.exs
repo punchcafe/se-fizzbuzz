@@ -1,6 +1,16 @@
 defmodule ApiWeb.FizzBuzzControllerTest do
   use ApiWeb.ConnCase
 
+  test "GET /idontexist: should return JSON not found", %{conn: conn} do
+    {code, headers, message} = assert_error_sent 404, fn () -> get(conn, "/idontexist") end
+    assert message == "\"Not Found\""
+    assert Enum.at(headers,0) == {"content-type", "application/json; charset=utf-8"}
+  end
+
+  # TODO: page size must be bigger than 0 -> 400
+  # TODO: Get out of range 1-100000 -> 404
+  # TODO: Page out of range 1-100000 -> 404
+
   test "GET /fizzbuzz/1", %{conn: conn} do
     conn = get(conn, "/fizzbuzz/1")
     body = json_response(conn, 200)
