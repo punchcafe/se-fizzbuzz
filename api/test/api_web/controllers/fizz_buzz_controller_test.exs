@@ -80,12 +80,32 @@ defmodule ApiWeb.FizzBuzzControllerTest do
 
   test "GET /fizzbuzz?page_size=0: returns 400 for page size too small", %{conn: conn} do
     {code, headers, message} = assert_error_sent 400, fn () -> get(conn, "/fizzbuzz?page_size=0") end
-    assert message == "{\"errors\":{\"detail\":\"Page size must not be less than one or greater than 200\"}}"
+    assert message == "{\"errors\":{\"detail\":\"Page size must not be less than one or greater than 200, and page number must be 1 or greater.\"}}"
+  end
+
+  test "GET /fizzbuzz?page_size=-2: returns 400 for page size too small", %{conn: conn} do
+    {code, headers, message} = assert_error_sent 400, fn () -> get(conn, "/fizzbuzz?page_size=-2") end
+    assert message == "{\"errors\":{\"detail\":\"Page size must not be less than one or greater than 200, and page number must be 1 or greater.\"}}"
   end
 
   test "GET /fizzbuzz?page_size=201: returns 400 for page size too large", %{conn: conn} do
-    {code, headers, message} = assert_error_sent 400, fn () -> get(conn, "/fizzbuzz?page_size=0") end
-    assert message == "{\"errors\":{\"detail\":\"Page size must not be less than one or greater than 200\"}}"
+    {code, headers, message} = assert_error_sent 400, fn () -> get(conn, "/fizzbuzz?page_size=201") end
+    assert message == "{\"errors\":{\"detail\":\"Page size must not be less than one or greater than 200, and page number must be 1 or greater.\"}}"
+  end
+
+  test "GET /fizzbuzz?page_number=0: returns 400 for page number invalid", %{conn: conn} do
+    {code, headers, message} = assert_error_sent 400, fn () -> get(conn, "/fizzbuzz?page_number=0") end
+    assert message == "{\"errors\":{\"detail\":\"Page size must not be less than one or greater than 200, and page number must be 1 or greater.\"}}"
+  end
+
+  test "GET /fizzbuzz?page_number=-1: returns 400 for page number invalid", %{conn: conn} do
+    {code, headers, message} = assert_error_sent 400, fn () -> get(conn, "/fizzbuzz?page_number=-1") end
+    assert message == "{\"errors\":{\"detail\":\"Page size must not be less than one or greater than 200, and page number must be 1 or greater.\"}}"
+  end
+
+  test "GET /fizzbuzz?page_size=100&page_number=1000001: returns 404 for page number out of range", %{conn: conn} do
+    {code, headers, message} = assert_error_sent 404, fn () -> get(conn, "/fizzbuzz?page_size=100&page_number=1000001") end
+    assert message == "{\"errors\":{\"detail\":\"Page not found. Have you gone past 100,000,000 entities?\"}}"
   end
 
   test "GET /fizzbuzz: paginated data contains favourite data", %{conn: conn} do
