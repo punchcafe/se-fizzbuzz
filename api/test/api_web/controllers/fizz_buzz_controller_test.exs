@@ -6,15 +6,30 @@ defmodule ApiWeb.FizzBuzzControllerTest do
     assert message == "\"Not Found\""
     assert Enum.at(headers,0) == {"content-type", "application/json; charset=utf-8"}
   end
-
-  # TODO: Get out of range 1-100_000_000 -> 404
   # TODO: Page out of range 1-100_000_000 -> 404
+
+  test "GET /fizzbuzz/0: should raise 404", %{conn: conn} do
+    {code, headers, message} = assert_error_sent 404, fn () -> get(conn, "/fizzbuzz/0") end
+    assert message == "{\"errors\":{\"detail\":\"No FizzBuzz found for id. Valid fizz buzz ids are between 1 - 100,000,000\"}}"
+  end
+
+  test "GET /fizzbuzz/100000001: should raise 404", %{conn: conn} do
+    {code, headers, message} = assert_error_sent 404, fn () -> get(conn, "/fizzbuzz/100000001") end
+    assert message == "{\"errors\":{\"detail\":\"No FizzBuzz found for id. Valid fizz buzz ids are between 1 - 100,000,000\"}}"
+  end
 
   test "GET /fizzbuzz/1", %{conn: conn} do
     conn = get(conn, "/fizzbuzz/1")
     body = json_response(conn, 200)
     assert body["value"] == "1"
     assert body["id"] == 1
+  end
+
+  test "GET /fizzbuzz/100000000", %{conn: conn} do
+    conn = get(conn, "/fizzbuzz/100000000")
+    body = json_response(conn, 200)
+    assert body["value"] == "Buzz"
+    assert body["id"] == 100000000
   end
 
   test "GET /fizzbuzz/3", %{conn: conn} do
@@ -145,6 +160,44 @@ defmodule ApiWeb.FizzBuzzControllerTest do
     assert body["value"] == "FizzBuzz"
     assert body["id"] == 15
     assert body["is_favourite"] == true
+  end
+
+  test "PUT /fizzbuzz/100000000: should favorite fizz buzz at limit", %{conn: conn} do
+    conn = put(conn, "/fizzbuzz/100000000", %{is_favourite: true})
+    body = json_response(conn, 200)
+    assert body["value"] == "Buzz"
+    assert body["id"] == 100000000
+    assert body["is_favourite"] == true
+  end
+
+  test "PUT /fizzbuzz/100000001: should return 404 when attempting to favourite out of range fizz buzz", %{conn: conn} do
+    {code, headers, message} = assert_error_sent 404, fn () -> put(conn, "/fizzbuzz/100000001", %{is_favourite: true}) end
+    assert message == "{\"errors\":{\"detail\":\"No FizzBuzz found for id. Valid fizz buzz ids are between 1 - 100,000,000\"}}"
+  end
+
+  test "PUT /fizzbuzz/0: should return 404 when attempting to favourite out of range fizz buzz", %{conn: conn} do
+    {code, headers, message} = assert_error_sent 404, fn () -> put(conn, "/fizzbuzz/0", %{is_favourite: true}) end
+    assert message == "{\"errors\":{\"detail\":\"No FizzBuzz found for id. Valid fizz buzz ids are between 1 - 100,000,000\"}}"
+  end
+
+  test "PUT /fizzbuzz/-1: should return 404 when attempting to favourite out of range fizz buzz", %{conn: conn} do
+    {code, headers, message} = assert_error_sent 404, fn () -> put(conn, "/fizzbuzz/-1", %{is_favourite: true}) end
+    assert message == "{\"errors\":{\"detail\":\"No FizzBuzz found for id. Valid fizz buzz ids are between 1 - 100,000,000\"}}"
+  end
+
+  test "PUT /fizzbuzz/100000001: should return 404 when attempting to unfavourite out of range fizz buzz", %{conn: conn} do
+    {code, headers, message} = assert_error_sent 404, fn () -> put(conn, "/fizzbuzz/100000001", %{is_favourite: false}) end
+    assert message == "{\"errors\":{\"detail\":\"No FizzBuzz found for id. Valid fizz buzz ids are between 1 - 100,000,000\"}}"
+  end
+
+  test "PUT /fizzbuzz/0: should return 404 when attempting to unfavourite out of range fizz buzz", %{conn: conn} do
+    {code, headers, message} = assert_error_sent 404, fn () -> put(conn, "/fizzbuzz/0", %{is_favourite: false}) end
+    assert message == "{\"errors\":{\"detail\":\"No FizzBuzz found for id. Valid fizz buzz ids are between 1 - 100,000,000\"}}"
+  end
+
+  test "PUT /fizzbuzz/-1: should return 404 when attempting to unfavourite out of range fizz buzz", %{conn: conn} do
+    {code, headers, message} = assert_error_sent 404, fn () -> put(conn, "/fizzbuzz/-5", %{is_favourite: false}) end
+    assert message == "{\"errors\":{\"detail\":\"No FizzBuzz found for id. Valid fizz buzz ids are between 1 - 100,000,000\"}}"
   end
 
   test "PUT /fizzbuzz/15: should unfavourite selected fizz buzz", %{conn: conn} do

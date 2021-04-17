@@ -2,6 +2,12 @@ defmodule FizzBuzz.Services do
 
     import Ecto.Query, only: [from: 2]
 
+    @fizz_buzz_max 100000000
+
+    def get_fizz_buzz(fizz_buzz_id) when fizz_buzz_id < 1 or fizz_buzz_id > @fizz_buzz_max do
+        raise FizzBuzzNotFoundError
+    end
+
     def get_fizz_buzz(fizz_buzz_id) do
         is_favourite = Api.Repo.exists?(from u in Api.Favourite, where: u.fizz_buzz_id == ^fizz_buzz_id)
         %{:value => FizzBuzz.fizz_buzz(fizz_buzz_id), :id => fizz_buzz_id, :is_favourite => is_favourite}
@@ -23,9 +29,17 @@ defmodule FizzBuzz.Services do
       %{data: data, page: %{ page_size: page_size, page_number: page_number }}
     end
 
+    def favourite_fizz_buzz(fizz_buzz_id) when fizz_buzz_id < 1 or fizz_buzz_id > @fizz_buzz_max do
+        raise FizzBuzzNotFoundError
+    end
+
     def favourite_fizz_buzz(fizz_buzz_id) do
         Api.Repo.insert(%Api.Favourite{fizz_buzz_id: fizz_buzz_id})
         %{:value => FizzBuzz.fizz_buzz(fizz_buzz_id), :id => fizz_buzz_id, :is_favourite => true}
+    end
+
+    def unfavourite_fizz_buzz(fizz_buzz_id)  when fizz_buzz_id < 1 or fizz_buzz_id > @fizz_buzz_max do
+        raise FizzBuzzNotFoundError
     end
 
     def unfavourite_fizz_buzz(fizz_buzz_id) do

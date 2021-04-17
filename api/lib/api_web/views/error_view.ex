@@ -17,4 +17,8 @@ defmodule ApiWeb.ErrorView do
   def render("400.json", %{conn: conn}) do
     %{errors: %{detail: conn.assigns.reason.message}}
   end
+
+  def render("404.json", %{conn: %{ assigns: %{ reason: reason = %FizzBuzzNotFoundError{}}}}) do
+      %{errors: %{detail: reason.message}}
+  end
 end
