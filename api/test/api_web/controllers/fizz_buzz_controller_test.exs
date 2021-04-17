@@ -7,9 +7,8 @@ defmodule ApiWeb.FizzBuzzControllerTest do
     assert Enum.at(headers,0) == {"content-type", "application/json; charset=utf-8"}
   end
 
-  # TODO: page size must be bigger than 0 -> 400
-  # TODO: Get out of range 1-100000 -> 404
-  # TODO: Page out of range 1-100000 -> 404
+  # TODO: Get out of range 1-100_000_000 -> 404
+  # TODO: Page out of range 1-100_000_000 -> 404
 
   test "GET /fizzbuzz/1", %{conn: conn} do
     conn = get(conn, "/fizzbuzz/1")
@@ -62,6 +61,16 @@ defmodule ApiWeb.FizzBuzzControllerTest do
     assert page["page_number"] == 1
     assert page["page_size"] == 5
     assert data == expected_data
+  end
+
+  test "GET /fizzbuzz?page_size=0: returns 400 for page size too small", %{conn: conn} do
+    {code, headers, message} = assert_error_sent 400, fn () -> get(conn, "/fizzbuzz?page_size=0") end
+    assert message == "{\"errors\":{\"detail\":\"Page size must not be less than one or greater than 200\"}}"
+  end
+
+  test "GET /fizzbuzz?page_size=201: returns 400 for page size too large", %{conn: conn} do
+    {code, headers, message} = assert_error_sent 400, fn () -> get(conn, "/fizzbuzz?page_size=0") end
+    assert message == "{\"errors\":{\"detail\":\"Page size must not be less than one or greater than 200\"}}"
   end
 
   test "GET /fizzbuzz: paginated data contains favourite data", %{conn: conn} do

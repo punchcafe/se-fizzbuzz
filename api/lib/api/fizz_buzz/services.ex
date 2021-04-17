@@ -7,9 +7,12 @@ defmodule FizzBuzz.Services do
         %{:value => FizzBuzz.fizz_buzz(fizz_buzz_id), :id => fizz_buzz_id, :is_favourite => is_favourite}
     end
 
+    def page_fizz_buzz(page_number, page_size) when page_size < 1 or page_size > 200 do
+        raise IllegalPageSizeError
+    end
+
     def page_fizz_buzz(page_number, page_size) do
-      # handle massive page_size
-      # throw not found if bigger than 10000
+      # throw not found if bigger than 100_000_000
       start_index = (page_size * (page_number - 1)) + 1
       end_index_inclusive = start_index + page_size - 1
       # clamp
