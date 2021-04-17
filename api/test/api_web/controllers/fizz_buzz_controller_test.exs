@@ -174,6 +174,19 @@ defmodule ApiWeb.FizzBuzzControllerTest do
     assert data == expected_data
   end
 
+  test "GET /fizzbuzz: returns upto but not past fizz buzz id: 100000000", %{conn: conn} do
+    conn = get(conn, "/fizzbuzz?page_size=3&page_number=33333334")
+    body = json_response(conn, 200)
+    data = body["data"]
+    page = body["page"]
+
+    expected_data = [%{"id" => 100000000, "value" => "Buzz", "is_favourite" => false}]
+
+    assert page["page_number"] == 33333334
+    assert page["page_size"] == 3
+    assert data == expected_data
+  end
+
   test "PUT /fizzbuzz/15: should favorite fizz buzz", %{conn: conn} do
     conn = put(conn, "/fizzbuzz/15", %{is_favourite: true})
     body = json_response(conn, 200)

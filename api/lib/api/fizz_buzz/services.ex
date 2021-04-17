@@ -18,11 +18,10 @@ defmodule FizzBuzz.Services do
     end
 
     def page_fizz_buzz(page_number, page_size) do
-      # throw not found if bigger than 100_000_000
       start_index = (page_size * (page_number - 1)) + 1
       if start_index > @fizz_buzz_max, do: raise FizzBuzzPageNotFoundError
       end_index_inclusive = start_index + page_size - 1
-      # clamp
+      |> clamp_to_max_fizz_buzz_id()
       favourite_ids = find_favourites_in_range(start_index, end_index_inclusive)
       data = start_index..end_index_inclusive
       |> Enum.map(fn fizz_buzz_id -> %{:value => FizzBuzz.fizz_buzz(fizz_buzz_id), :id => fizz_buzz_id, :is_favourite => false} end)
@@ -55,5 +54,9 @@ defmodule FizzBuzz.Services do
     defp find_favourites_in_range(start_range_inclusive, end_range_inclusive) do
         Api.Repo.all(from u in Api.Favourite, where: u.fizz_buzz_id >= ^start_range_inclusive and u.fizz_buzz_id <= ^end_range_inclusive)
         |> Enum.map(fn favourite -> favourite.fizz_buzz_id end)
+    end
+
+    defp clamp_to_max_fizz_buzz_id(fizz_buzz_id) do
+        if fizz_buzz_id > @fizz_buzz_max, do: @fizz_buzz_max, else: fizz_buzz_id
     end
 end
