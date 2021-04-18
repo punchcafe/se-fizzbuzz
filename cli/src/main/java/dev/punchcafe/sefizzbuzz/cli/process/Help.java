@@ -6,11 +6,12 @@ import lombok.AllArgsConstructor;
 
 import java.util.List;
 
+import static dev.punchcafe.sefizzbuzz.cli.constant.MessageConstants.HELP_MESSAGE;
+
 @AllArgsConstructor
 public class Help implements AppProcess {
 
     private static String HELP_NAME = "help";
-    private static String HELP_GUIDE = "WELCOME TO THE FIZZBUZZ CLI";
 
     private final UserOutputWriter out;
 
@@ -24,6 +25,6 @@ public class Help implements AppProcess {
         if (args.size() > 0) {
             throw new UnknownArgumentException(String.join(" ", args));
         }
-        out.printToUser(HELP_GUIDE);
+        out.printToUser(HELP_MESSAGE);
     }
 }

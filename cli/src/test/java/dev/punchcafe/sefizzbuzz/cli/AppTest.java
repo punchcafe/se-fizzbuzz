@@ -11,10 +11,12 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
+import static dev.punchcafe.sefizzbuzz.cli.constant.MessageConstants.HELP_MESSAGE;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 class AppTest {
+
     @Test
     void userCanCallHelpCommand() {
         UserOutputWriter mockOutput = Mockito.spy(new UserOutputWriter());
@@ -23,6 +25,6 @@ class AppTest {
                 .build();
         final var app = new AppFactory(appConfig).buildApp();
         app.execute(List.of("help"));
-        verify(mockOutput, times(1)).printToUser("WELCOME TO THE FIZZBUZZ CLI");
+        verify(mockOutput, times(1)).printToUser(HELP_MESSAGE);
     }
 }
