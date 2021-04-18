@@ -1,5 +1,3 @@
-console.log("Hello World!");
-
 function FizzBuzzEntity(fizzBuzzJson){
     this.id = fizzBuzzJson["id"]
     this.value = fizzBuzzJson["value"]
@@ -8,6 +6,10 @@ function FizzBuzzEntity(fizzBuzzJson){
 
 var controlPanelState = {
     actionInProgress: false,
+    userPref: {
+        pageSize: 100,
+        pageNumber: 1
+    },
     pageData: null
 }
 
@@ -29,8 +31,8 @@ function renderFizzBuzzes(fizzBuzzList){
     return renderedHtml
 }
 
-async function getPageData(pageSize,PageNumber){
-    var response = fetch(`http://localhost:4000/fizzbuzz?page_size=${pageSize}&page_number=${PageNumber}`, {
+async function getPageData(PageNumber){
+    var response = fetch(`http://localhost:4000/fizzbuzz?page_size=${controlPanelState.userPref.pageSize}&page_number=${PageNumber}`, {
     method: 'GET',
     mode: 'cors', 
     credentials: 'same-origin',
@@ -49,10 +51,14 @@ function setPageData(pageDataJson){
     }
 }
 
-window.addEventListener('load', (event) => {
-    const initialPage = getPageData(50,1)
+function triggerPageRender(){
+    const initialPage = getPageData(1)
     initialPage.then(response => renderFizzBuzzes(response["data"]))
                 .then(result => document.getElementById("fizz_buzz_container").innerHTML = result)
     initialPage.then(response => response["page"])
                 .then(result => setPageData(result))
+}
+
+window.addEventListener('load', (event) => {
+    triggerPageRender()
 })
