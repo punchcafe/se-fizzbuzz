@@ -90,7 +90,6 @@ function assignFavouriteCallbacks(fizzBuzzNodes){
             }
             controlPanelState.actionInProgress = true
             const parentNode = event.target.parentNode
-            console.log(parentNode)
             // Captor div will have been clicked, so get informtaion from parent
             var fizzBuzzElementId = parentNode.id
             const fizzBuzzId = fizzBuzzElementId.match(fizzBuzzIdFormat)[1];
@@ -102,7 +101,7 @@ function assignFavouriteCallbacks(fizzBuzzNodes){
 }
 
 function triggerPageRender(){
-    const initialPage = getPageData(1)
+    const initialPage = getPageData(controlPanelState.userPref.pageNumber)
     initialPage.then(response => renderFizzBuzzes(response["data"]))
                 .then(result => document.getElementById("fizz_buzz_container").innerHTML = result)
     initialPage.then(response => response["page"])
@@ -121,10 +120,36 @@ function getPreviousSelectionIndex(){
     }
 }
 
+function triggerNextPage(){
+    if(controlPanelState.actionInProgress || !controlPanelState.pageData.hasNext){
+        return
+    }
+    controlPanelState.actionInProgress = true
+    controlPanelState.userPref.pageNumber++
+    triggerPageRender()
+}
+
+function triggerPreviousPage(){
+    if(controlPanelState.actionInProgress || !controlPanelState.pageData.hasPrevious){
+        return
+    }
+    controlPanelState.actionInProgress = true
+    controlPanelState.userPref.pageNumber--
+    triggerPageRender()
+}
+
 window.addEventListener('load', (event) => {
     setInterval(() => {
         document.body.style.height = window.innerHeight + "px"
     }, 100)
+
+    document.getElementById("right_button").addEventListener("click", (event) => {
+        triggerNextPage()
+    })
+    document.getElementById("left_button").addEventListener("click", (event) => {
+        triggerPreviousPage()
+    })
+    
     const selectedPageSizeOptions = document.getElementById("page_size_selector").options 
     controlPanelState.userPref.pageSize = parseInt(selectedPageSizeOptions[selectedPageSizeOptions.selectedIndex].value)
     document.getElementById("page_size_selector").addEventListener("change", (event) => {
