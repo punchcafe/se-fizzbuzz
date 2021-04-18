@@ -34,8 +34,8 @@ function renderFizzBuzzes(fizzBuzzList){
     return renderedHtml
 }
 
-async function getPageData(PageNumber){
-    const response = fetch(`http://localhost:4000/fizzbuzz?page_size=${controlPanelState.userPref.pageSize}&page_number=${PageNumber}`, {
+async function getPageData(pageNumber){
+    const response = fetch(`http://localhost:4000/fizzbuzz?page_size=${controlPanelState.userPref.pageSize}&page_number=${pageNumber}`, {
     method: 'GET',
     mode: 'cors', 
     credentials: 'same-origin',
@@ -110,13 +110,15 @@ function renderPagePanelData(){
 
 function triggerPageRender(){
     const initialPage = getPageData(controlPanelState.userPref.pageNumber)
+
     initialPage.then(response => renderFizzBuzzes(response["data"]))
                 .then(result => document.getElementById("fizz_buzz_container").innerHTML = result)
+                .then(result => assignFavouriteCallbacks(document.getElementById("fizz_buzz_container").childNodes))
+
     initialPage.then(response => response["page"])
                 .then(result => setPageData(result))
                 .then(response => renderPagePanelData())
-    initialPage.then(response => renderFizzBuzzes(response["data"]))
-                .then(result => assignFavouriteCallbacks(document.getElementById("fizz_buzz_container").childNodes))
+
     initialPage.then(response => controlPanelState.actionInProgress = false)
 }
 
@@ -147,11 +149,22 @@ function triggerPreviousPage(){
     triggerPageRender()
 }
 
+function triggerPageSizeChange(selectChangeEvent) {
+    if(controlPanelState.actionInProgress){
+        selectChangeEvent.target.options.selectedIndex = getPreviousSelectionIndex()
+        return
+    }
+    controlPanelState.actionInProgress = true;
+    controlPanelState.userPref.pageSize = parseInt(selectChangeEvent.target.options[selectChangeEvent.target.options.selectedIndex].value)
+    triggerPageRender()
+}
+
 window.addEventListener('load', (event) => {
     setInterval(() => {
         document.getElementById("background_holder").style.height = window.innerHeight + "px"
     }, 100)
 
+    // Assign page cursor call backs
     document.getElementById("right_button").addEventListener("click", (event) => {
         triggerNextPage()
     })
@@ -159,16 +172,10 @@ window.addEventListener('load', (event) => {
         triggerPreviousPage()
     })
     
+    // set initial page size on load
     const selectedPageSizeOptions = document.getElementById("page_size_selector").options 
     controlPanelState.userPref.pageSize = parseInt(selectedPageSizeOptions[selectedPageSizeOptions.selectedIndex].value)
-    document.getElementById("page_size_selector").addEventListener("change", (event) => {
-        if(controlPanelState.actionInProgress){
-            target.options.selectedIndex = getPreviousSelectionIndex()
-            return
-        }
-        controlPanelState.actionInProgress = true;
-        controlPanelState.userPref.pageSize = parseInt(event.target.options[event.target.options.selectedIndex].value)
-        triggerPageRender()
-    })
+    document.getElementById("page_size_selector").addEventListener("change", (event) => {triggerPageSizeChange(event)})
+
     triggerPageRender()
 })
