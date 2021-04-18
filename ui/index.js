@@ -122,6 +122,9 @@ function getPreviousSelectionIndex(){
 }
 
 window.addEventListener('load', (event) => {
+    setInterval(() => {
+        document.body.style.height = window.innerHeight + "px"
+    }, 100)
     const selectedPageSizeOptions = document.getElementById("page_size_selector").options 
     controlPanelState.userPref.pageSize = parseInt(selectedPageSizeOptions[selectedPageSizeOptions.selectedIndex].value)
     document.getElementById("page_size_selector").addEventListener("change", (event) => {
