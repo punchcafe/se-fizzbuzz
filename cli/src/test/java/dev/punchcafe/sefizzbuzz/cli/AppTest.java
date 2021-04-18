@@ -3,12 +3,26 @@
  */
 package dev.punchcafe.sefizzbuzz.cli;
 
+import dev.punchcafe.sefizzbuzz.cli.config.AppConfig;
+import dev.punchcafe.sefizzbuzz.cli.config.AppFactory;
+import dev.punchcafe.sefizzbuzz.cli.io.UserOutputWriter;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.mockito.Mockito;
+
+import java.util.List;
+
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 class AppTest {
-    @Test void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+    @Test
+    void userCanCallHelpCommand() {
+        UserOutputWriter mockOutput = Mockito.spy(new UserOutputWriter());
+        final var appConfig = AppConfig.builder()
+                .userOutputWriter(mockOutput)
+                .build();
+        final var app = new AppFactory(appConfig).buildApp();
+        app.execute(List.of("help"));
+        verify(mockOutput, times(1)).printToUser("WELCOME TO THE FIZZBUZZ CLI");
     }
 }

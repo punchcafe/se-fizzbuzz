@@ -10,23 +10,23 @@ import java.util.stream.Collectors;
 
 @Builder
 @Value
-public class OptionSelector implements Process {
+public class OptionSelector implements AppProcess {
 
     private final String processName;
-    private final List<Process> subProcesses;
+    private final List<AppProcess> subAppProcesses;
 
     @Override
     public void execute(List<String> args) {
         if (args.size() == 0) {
-            throw new MissingCommandException(subProcesses.stream()
-                    .map(Process::getProcessName)
+            throw new MissingCommandException(subAppProcesses.stream()
+                    .map(AppProcess::getProcessName)
                     .collect(Collectors.toList()));
         }
 
         final var selectedCommand = args.get(0);
 
-        final var selectedProcess = subProcesses.stream()
-                .filter(process -> selectedCommand.toLowerCase().equals(process.getProcessName().toLowerCase()))
+        final var selectedProcess = subAppProcesses.stream()
+                .filter(appProcess -> selectedCommand.toLowerCase().equals(appProcess.getProcessName().toLowerCase()))
                 .findFirst();
 
         if (selectedProcess.isEmpty()) {
