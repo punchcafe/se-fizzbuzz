@@ -12,7 +12,7 @@ defmodule ApiWeb.FizzBuzzController do
   def paginate(conn, %{"page_number" => page_number, "page_size" => page_size}) do
     page_number = String.to_integer(page_number)
     page_size = String.to_integer(page_size)
-    FizzBuzz.Services.page_fizz_buzz(page_number, page_size)
+    FizzBuzz.Services.Pagination.page_fizz_buzz(page_number, page_size)
     |> return_fizz_buzz_as_json(conn)
   end
 
