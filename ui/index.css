@@ -2,6 +2,40 @@
     padding: 0;
     margin: 0;
 }
+#control_panel {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+select {
+    display: inline-block;
+    appearance: none;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-bottom: solid white 1px;
+}
+
+#control_panel div {
+    font-size: 30px;
+    display: inline-block;
+    color: white;
+}
+
+#control_panel .separator {
+    font-size: 30px;
+    display:block;
+    color: white;
+}
+
+#control_panel p {
+    font-style: italic;
+    font-size: 30px;
+    font-size: 15px;
+    display:inline-block;
+    color: #62656c;
+}
+
 body {
     background-color: #2e3035;
     height: 1500px;
@@ -20,7 +54,7 @@ body {
 }
 
 #title_holder {
-    height: 170px;
+    height: 150px;
 }
 
 #control_panel {
@@ -105,10 +139,10 @@ body {
     background-image: url("assets/selected_crystal.png");
 }
 
-.inactive_navigation_button {
-    color: white;
+#control_panel .inactive_navigation_button {
+    color: #474a51;
 }
 
-.active_navigation_button {
-    color: black;
+#control_panel .active_navigation_button {
+    color: white;
 }
