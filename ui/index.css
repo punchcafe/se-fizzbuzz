@@ -58,3 +58,11 @@ body {
     height: 35px;
     background-image: url("assets/selected_crystal.png");
 }
+
+.inactive_navigation_button {
+    color: white;
+}
+
+.active_navigation_button {
+    color: black;
+}

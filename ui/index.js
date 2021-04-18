@@ -100,12 +100,21 @@ function assignFavouriteCallbacks(fizzBuzzNodes){
     }
 }
 
+function renderPagePanelData(){
+    console.log(controlPanelState.pageData)
+    console.log(document.getElementById("left_button"))
+    document.getElementById("page_number_container").innerHTML = controlPanelState.userPref.pageNumber
+    document.getElementById("left_button").className = controlPanelState.pageData.hasPrevious ? "active_navigation_button" : "inactive_navigation_button"
+    document.getElementById("right_button").className = controlPanelState.pageData.hasNext ? "active_navigation_button" : "inactive_navigation_button"
+}
+
 function triggerPageRender(){
     const initialPage = getPageData(controlPanelState.userPref.pageNumber)
     initialPage.then(response => renderFizzBuzzes(response["data"]))
                 .then(result => document.getElementById("fizz_buzz_container").innerHTML = result)
     initialPage.then(response => response["page"])
                 .then(result => setPageData(result))
+                .then(response => renderPagePanelData())
     initialPage.then(response => renderFizzBuzzes(response["data"]))
                 .then(result => assignFavouriteCallbacks(document.getElementById("fizz_buzz_container").childNodes))
     initialPage.then(response => controlPanelState.actionInProgress = false)
