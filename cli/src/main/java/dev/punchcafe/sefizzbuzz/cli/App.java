@@ -3,8 +3,20 @@
  */
 package dev.punchcafe.sefizzbuzz.cli;
 
+import dev.punchcafe.sefizzbuzz.cli.config.AppConfig;
+import dev.punchcafe.sefizzbuzz.cli.config.AppFactory;
+import dev.punchcafe.sefizzbuzz.cli.io.UserOutputWriter;
+
+import java.util.Arrays;
+
 public class App {
 
     public static void main(String[] args) {
+        UserOutputWriter mockOutput = new UserOutputWriter();
+        final var appConfig = AppConfig.builder()
+                .userOutputWriter(mockOutput)
+                .build();
+        final var app = new AppFactory(appConfig).buildApp();
+        app.execute(Arrays.asList(args));
     }
 }

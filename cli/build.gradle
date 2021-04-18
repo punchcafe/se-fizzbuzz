@@ -17,6 +17,12 @@ plugins {
 repositories {
     mavenCentral()
 }
+jar {
+    manifest {
+        attributes["Main-Class"] = "dev.punchcafe.sefizzbuzz.cli.App"
+    }
+}
+
 
 dependencies {
 
