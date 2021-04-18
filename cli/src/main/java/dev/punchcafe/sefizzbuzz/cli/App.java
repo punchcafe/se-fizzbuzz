@@ -3,12 +3,23 @@
  */
 package dev.punchcafe.sefizzbuzz.cli;
 
+import dev.punchcafe.sefizzbuzz.cli.io.UserOutputWriter;
+import dev.punchcafe.sefizzbuzz.cli.process.Help;
+import dev.punchcafe.sefizzbuzz.cli.process.OptionSelector;
+
+import java.util.Arrays;
+import java.util.List;
+
 public class App {
     public String getGreeting() {
         return "Hello world.";
     }
 
     public static void main(String[] args) {
+        final var userInput = new UserOutputWriter();
+        final var helpCommand = new Help(userInput);
+        final var initialSelector = OptionSelector.builder().processName("main").subProcesses(List.of(helpCommand)).build();
+        initialSelector.execute(Arrays.asList(args));
         System.out.println(new App().getGreeting());
     }
 }
