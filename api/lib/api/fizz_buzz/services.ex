@@ -10,7 +10,7 @@ defmodule FizzBuzz.Services do
 
     def get_fizz_buzz(fizz_buzz_id) do
         is_favourite = Api.Repo.exists?(from u in Api.Favourite, where: u.fizz_buzz_id == ^fizz_buzz_id)
-        %{:value => FizzBuzz.fizz_buzz(fizz_buzz_id), :id => fizz_buzz_id, :is_favourite => is_favourite}
+        build_fizz_buzz(fizz_buzz_id, is_favourite)
     end
 
     def page_fizz_buzz(page_number, page_size) when page_size < 1 or page_size > 200 or page_number < 1 do
@@ -18,20 +18,29 @@ defmodule FizzBuzz.Services do
     end
 
     def page_fizz_buzz(page_number, page_size) do
-      start_index = (page_size * (page_number - 1)) + 1
+      start_index = calculate_start_index_from_page_details(page_number, page_size)
       if start_index > @fizz_buzz_max, do: raise FizzBuzzPageNotFoundError
 
       end_index_inclusive = start_index + page_size - 1
       |> clamp_to_max_fizz_buzz_id()
 
+      data = get_fizz_buzz_for_range(start_index, end_index_inclusive)
       has_next_page = end_index_inclusive < @fizz_buzz_max
       has_previous_page = start_index > 1
+      
+      %{data: data, 
+        page: %{ page_size: page_size, page_number: page_number, has_next_page: has_next_page, has_previous_page: has_previous_page }}
+    end
 
+    defp calculate_start_index_from_page_details(page_number, page_size) do
+        (page_size * (page_number - 1)) + 1
+    end
+
+    defp get_fizz_buzz_for_range(start_index, end_index_inclusive) do
       favourite_ids = find_favourites_in_range(start_index, end_index_inclusive)
-      data = start_index..end_index_inclusive
-      |> Enum.map(fn fizz_buzz_id -> %{:value => FizzBuzz.fizz_buzz(fizz_buzz_id), :id => fizz_buzz_id, :is_favourite => false} end)
+      start_index..end_index_inclusive
+      |> Enum.map(&build_fizz_buzz/1)
       |> Enum.map(fn fizz_buzz -> apply_favourite_status(fizz_buzz, favourite_ids) end)
-      %{data: data, page: %{ page_size: page_size, page_number: page_number, has_next_page: has_next_page, has_previous_page: has_previous_page }}
     end
 
     def favourite_fizz_buzz(fizz_buzz_id) when fizz_buzz_id < 1 or fizz_buzz_id > @fizz_buzz_max do
@@ -40,7 +49,7 @@ defmodule FizzBuzz.Services do
 
     def favourite_fizz_buzz(fizz_buzz_id) do
         Api.Repo.insert(%Api.Favourite{fizz_buzz_id: fizz_buzz_id})
-        %{:value => FizzBuzz.fizz_buzz(fizz_buzz_id), :id => fizz_buzz_id, :is_favourite => true}
+        build_fizz_buzz(fizz_buzz_id, true)
     end
 
     def unfavourite_fizz_buzz(fizz_buzz_id)  when fizz_buzz_id < 1 or fizz_buzz_id > @fizz_buzz_max do
@@ -49,7 +58,7 @@ defmodule FizzBuzz.Services do
 
     def unfavourite_fizz_buzz(fizz_buzz_id) do
         Api.Repo.delete(%Api.Favourite{fizz_buzz_id: fizz_buzz_id})
-        %{:value => FizzBuzz.fizz_buzz(fizz_buzz_id), :id => fizz_buzz_id, :is_favourite => false}
+        build_fizz_buzz(fizz_buzz_id, false)
     end
 
     defp apply_favourite_status(%{ id: id } = fizz_buzz, favourite_ids) do
@@ -63,5 +72,9 @@ defmodule FizzBuzz.Services do
 
     defp clamp_to_max_fizz_buzz_id(fizz_buzz_id) do
         if fizz_buzz_id > @fizz_buzz_max, do: @fizz_buzz_max, else: fizz_buzz_id
+    end
+
+    defp build_fizz_buzz(fizz_buzz_id, is_favourite \\ false) do
+        %{:value => FizzBuzz.fizz_buzz(fizz_buzz_id), :id => fizz_buzz_id, :is_favourite => is_favourite}
     end
 end
