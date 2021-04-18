@@ -149,7 +149,7 @@ function triggerPreviousPage(){
 
 window.addEventListener('load', (event) => {
     setInterval(() => {
-        document.body.style.height = window.innerHeight + "px"
+        document.getElementById("background_holder").style.height = window.innerHeight + "px"
     }, 100)
 
     document.getElementById("right_button").addEventListener("click", (event) => {
