@@ -7,6 +7,7 @@ function FizzBuzzEntity(fizzBuzzJson){
 }
 
 var controlPanelState = {
+    actionInProgress: false,
     pageData: null
 }
 

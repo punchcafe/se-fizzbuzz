@@ -1,3 +1,42 @@
+*{
+    padding: 0;
+    margin: 0;
+}
 #fizz_buzz_container {
     background-color: antiquewhite;
+}
+
+.fizz_buzz_entity {
+    position: relative;
+    background-color: gray;
+    width: 9%;
+    height: 60px;
+    min-width: 125px;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    margin-top: 6px;
+    margin-bottom: 3px;
+    display: inline-block;
+}
+
+.fizz_buzz_entity:hover {
+    background-color: white;
+}
+
+.favourite_icon_inactive {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+}
+
+.favourite_icon_active {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 20px;
+    height: 20px;
+    background-color: yellow;
 }
