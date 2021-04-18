@@ -11,7 +11,7 @@ var controlPanelState = {
     // startup with true
     actionInProgress: true,
     userPref: {
-        pageSize: 100,
+        pageSize: null,
         pageNumber: 1
     },
     pageData: null
@@ -122,6 +122,8 @@ function getPreviousSelectionIndex(){
 }
 
 window.addEventListener('load', (event) => {
+    const selectedPageSizeOptions = document.getElementById("page_size_selector").options 
+    controlPanelState.userPref.pageSize = parseInt(selectedPageSizeOptions[selectedPageSizeOptions.selectedIndex].value)
     document.getElementById("page_size_selector").addEventListener("change", (event) => {
         if(controlPanelState.actionInProgress){
             target.options.selectedIndex = getPreviousSelectionIndex()
