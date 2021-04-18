@@ -112,7 +112,24 @@ function triggerPageRender(){
     initialPage.then(response => controlPanelState.actionInProgress = false)
 }
 
+function getPreviousSelectionIndex(){
+    const selectorOptions = document.getElementById("page_size_selector").options
+    for(var i = 0; i < selectorOptions.length; i++){
+        if(parseInt(selectorOptions[i].value) == controlPanelState.userPref.pageSize){
+            return i
+        }
+    }
+}
 
 window.addEventListener('load', (event) => {
+    document.getElementById("page_size_selector").addEventListener("change", (event) => {
+        if(controlPanelState.actionInProgress){
+            target.options.selectedIndex = getPreviousSelectionIndex()
+            return
+        }
+        controlPanelState.actionInProgress = true;
+        controlPanelState.userPref.pageSize = parseInt(event.target.options[event.target.options.selectedIndex].value)
+        triggerPageRender()
+    })
     triggerPageRender()
 })
