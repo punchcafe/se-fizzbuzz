@@ -4,8 +4,12 @@ function FizzBuzzEntity(fizzBuzzJson){
     this.isFavourite = fizzBuzzJson["is_favourite"]
 }
 
+const fizzBuzzIdFormat = /fizz_buzz_id_(\d+)/
+const fizzBuzzFavouriteClassFormat = /favourite_icon_(active|inactive)/
+
 var controlPanelState = {
-    actionInProgress: false,
+    // startup with true
+    actionInProgress: true,
     userPref: {
         pageSize: 100,
         pageNumber: 1
@@ -14,8 +18,8 @@ var controlPanelState = {
 }
 
 FizzBuzzEntity.prototype.render = function(){
-    console.log(this)
     return `<div class="fizz_buzz_entity" id="fizz_buzz_id_${this.id}">
+                <div class="fizz_buzz_touch_event_captor"></div>
                 <div class="fizz_buzz_id_container">${this.id}</div>
                 <div class="fizz_buzz_value_container">${this.value}</div>
                 <div class="favourite_icon_${this.isFavourite ? "active" : "inactive" }"></div>
@@ -24,7 +28,6 @@ FizzBuzzEntity.prototype.render = function(){
 
 function renderFizzBuzzes(fizzBuzzList){
     var renderedHtml = ""
-    console.log(fizzBuzzList)
     for(var i = 0; i < fizzBuzzList.length; i++){
         renderedHtml = renderedHtml.concat(new FizzBuzzEntity(fizzBuzzList[i]).render())
     }
@@ -32,12 +35,27 @@ function renderFizzBuzzes(fizzBuzzList){
 }
 
 async function getPageData(PageNumber){
-    var response = fetch(`http://localhost:4000/fizzbuzz?page_size=${controlPanelState.userPref.pageSize}&page_number=${PageNumber}`, {
+    const response = fetch(`http://localhost:4000/fizzbuzz?page_size=${controlPanelState.userPref.pageSize}&page_number=${PageNumber}`, {
     method: 'GET',
     mode: 'cors', 
     credentials: 'same-origin',
     referrerPolicy: 'origin'})
     .then(response => response.json())
+    var returnValue = await response;
+    return returnValue
+}
+
+async function setIsFavourite(fizBuzzId, isFavourite){
+    const response = fetch(`http://localhost:4000/fizzbuzz/${fizBuzzId}`, {
+        method: 'PUT',
+        mode: 'cors', 
+        credentials: 'same-origin',
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        referrerPolicy: 'origin',
+        body: JSON.stringify({is_favourite: isFavourite})
+    }).then(response => response.json())
     var returnValue = await response;
     return returnValue
 }
@@ -51,13 +69,49 @@ function setPageData(pageDataJson){
     }
 }
 
+function getCurrentIsFavouriteStatus(containerElement){
+    for (var i = 0; i < containerElement.childNodes.length; i++) {
+        const matches = containerElement.childNodes[i].className 
+            && containerElement.childNodes[i].className.match(fizzBuzzFavouriteClassFormat)
+        if(matches){
+            if(matches[1] == "inactive"){
+                return false
+            }
+            return true
+        }   
+    }
+}
+
+function assignFavouriteCallbacks(fizzBuzzNodes){
+    for(var i = 0; i<fizzBuzzNodes.length; i++){
+        fizzBuzzNodes[i].addEventListener('click', (event) => {
+            if(controlPanelState.actionInProgress){
+                return
+            }
+            controlPanelState.actionInProgress = true
+            const parentNode = event.target.parentNode
+            console.log(parentNode)
+            // Captor div will have been clicked, so get informtaion from parent
+            var fizzBuzzElementId = parentNode.id
+            const fizzBuzzId = fizzBuzzElementId.match(fizzBuzzIdFormat)[1];
+            const currentFavouriteStatus = getCurrentIsFavouriteStatus(parentNode)
+            setIsFavourite(fizzBuzzId, !currentFavouriteStatus)
+            .then(result => triggerPageRender())
+        })
+    }
+}
+
 function triggerPageRender(){
     const initialPage = getPageData(1)
     initialPage.then(response => renderFizzBuzzes(response["data"]))
                 .then(result => document.getElementById("fizz_buzz_container").innerHTML = result)
     initialPage.then(response => response["page"])
                 .then(result => setPageData(result))
+    initialPage.then(response => renderFizzBuzzes(response["data"]))
+                .then(result => assignFavouriteCallbacks(document.getElementById("fizz_buzz_container").childNodes))
+    initialPage.then(response => controlPanelState.actionInProgress = false)
 }
+
 
 window.addEventListener('load', (event) => {
     triggerPageRender()
