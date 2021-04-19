@@ -25,9 +25,13 @@ public class AppFactory {
                 .client(config.getFizzBuzzClient())
                 .out(config.getUserOutputWriter())
                 .build();
-        final var initialSelector = OptionSelector.builder()
+        final var browse = Browse.builder()
+                .fizzBuzzClient(config.getFizzBuzzClient())
+                .userOutputWriter(config.getUserOutputWriter())
+                .build();
+        final var rootProcess = OptionSelector.builder()
                 .processName("main")
-                .subAppProcesses(List.of(helpCommand, calculateCommand, favouriteCommand, unfavouriteCommand)).build();
-        return initialSelector;
+                .subAppProcesses(List.of(helpCommand, calculateCommand, favouriteCommand, unfavouriteCommand, browse)).build();
+        return rootProcess;
     }
 }

@@ -8,5 +8,5 @@ import lombok.Value;
 public class FizzBuzzEntity {
     private final int id;
     private final String value;
-    private final boolean isFavourite;
+    private final boolean is_favourite;
 }

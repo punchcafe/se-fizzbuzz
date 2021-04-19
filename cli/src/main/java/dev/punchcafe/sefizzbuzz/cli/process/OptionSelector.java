@@ -3,13 +3,13 @@ package dev.punchcafe.sefizzbuzz.cli.process;
 import dev.punchcafe.sefizzbuzz.cli.exception.MissingCommandException;
 import dev.punchcafe.sefizzbuzz.cli.exception.UnknownArgumentException;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Builder
-@Value
+@Getter
 public class OptionSelector implements AppProcess {
 
     private final String processName;

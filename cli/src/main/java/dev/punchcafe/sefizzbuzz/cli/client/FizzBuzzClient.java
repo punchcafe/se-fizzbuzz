@@ -12,4 +12,7 @@ public interface FizzBuzzClient {
     @RequestLine("PUT /fizzbuzz/{fizzBuzzId}")
     @Headers("Content-Type: application/json")
     FizzBuzzEntity updateFavourite(@Param("fizzBuzzId") int fizzBuzzId, FavouritePayload data);
+
+    @RequestLine("GET /fizzbuzz?pageSize={pageSize}&pageNumber={pageNumber}")
+    PageResponse getPage(@Param("pageSize") int pageSize, @Param("pageNumber") int pageNumber);
 }
