@@ -1,6 +1,7 @@
 package dev.punchcafe.sefizzbuzz.cli.config;
 
 import dev.punchcafe.sefizzbuzz.cli.process.*;
+import dev.punchcafe.sefizzbuzz.cli.process.browse.Browse;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
