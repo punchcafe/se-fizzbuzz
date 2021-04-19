@@ -35,31 +35,35 @@ public class Browse implements AppProcess {
 
     @Override
     public void execute(List<String> args) {
-        final var firstPage = fizzBuzzClient.getPage(pageSize, page);
-        userOutputWriter.printToUser(renderPage(firstPage.getData(), firstPage.getPage()));
-        var command = userInputReader.getUserInput().trim();
-        while(!EXIT.equals(command)){
-            final var changePageNumberMatcher = CHANGE_PAGE.matcher(command);
-            final var changePageSizeMatcher = CHANGE_PAGE_SIZE.matcher(command);
-            if(HELP.equals(command)){
-                userOutputWriter.printToUser(HELP_MESSAGE);
-                command = userInputReader.getUserInput();
-                continue;
-            } else if(NEXT_PAGE.equals(command)){
-                page++;
-            } else if(PREVIOUS_PAGE.equals(command)){
-                if(page > 1){
-                    page--;
+        try {
+            final var firstPage = fizzBuzzClient.getPage(pageSize, page);
+            userOutputWriter.printToUser(renderPage(firstPage.getData(), firstPage.getPage()));
+            var command = userInputReader.getUserInput().trim();
+            while (!EXIT.equals(command)) {
+                final var changePageNumberMatcher = CHANGE_PAGE.matcher(command);
+                final var changePageSizeMatcher = CHANGE_PAGE_SIZE.matcher(command);
+                if (HELP.equals(command)) {
+                    userOutputWriter.printToUser(HELP_MESSAGE);
+                    command = userInputReader.getUserInput();
+                    continue;
+                } else if (NEXT_PAGE.equals(command)) {
+                    page++;
+                } else if (PREVIOUS_PAGE.equals(command)) {
+                    if (page > 1) {
+                        page--;
+                    }
+                } else if (changePageNumberMatcher.matches()) {
+                    page = Integer.parseInt(changePageNumberMatcher.group(1));
+                } else if (changePageSizeMatcher.matches()) {
+                    System.out.println("you got it!");
+                    pageSize = Integer.parseInt(changePageSizeMatcher.group(1));
                 }
-            } else if(changePageNumberMatcher.matches()){
-                page = Integer.parseInt(changePageNumberMatcher.group(1));
-            } else if(changePageSizeMatcher.matches()){
-                System.out.println("you got it!");
-                pageSize = Integer.parseInt(changePageSizeMatcher.group(1));
+                final var nextPage = fizzBuzzClient.getPage(pageSize, page);
+                userOutputWriter.printToUser(renderPage(nextPage.getData(), nextPage.getPage()));
+                command = userInputReader.getUserInput();
             }
-            final var nextPage = fizzBuzzClient.getPage(pageSize, page);
-            userOutputWriter.printToUser(renderPage(nextPage.getData(), nextPage.getPage()));
-            command = userInputReader.getUserInput();
+        } catch (RuntimeException ex) {
+            userOutputWriter.printToUser(String.format("something went wrong while browsing: %s", ex.getMessage()));
         }
     }
 }

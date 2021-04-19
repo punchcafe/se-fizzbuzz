@@ -1,3 +1,10 @@
+dev.punchcafe.sefizzbuzz.cli.BrowseTest.handlesExceptionsWithSimpleMessage=[
+  [
+    "something went wrong while browsing: Test Generated Exception!"
+  ]
+]
+
+
 dev.punchcafe.sefizzbuzz.cli.BrowseTest.userCanBrowse=[
   [
     "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions"
@@ -42,5 +49,13 @@ dev.punchcafe.sefizzbuzz.cli.BrowseTest.userCanQueryHelp=[
   [
     "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
     "available commands are: p, n, psize NUM, pjump NUM, help, exit"
+  ]
+]
+
+
+dev.punchcafe.sefizzbuzz.cli.BrowseTest.userCantGoBeforePageOne=[
+  [
+    "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
+    "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions"
   ]
 ]

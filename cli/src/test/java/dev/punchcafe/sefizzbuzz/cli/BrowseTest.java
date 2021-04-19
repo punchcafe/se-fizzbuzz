@@ -125,6 +125,23 @@ public class BrowseTest {
     }
 
     @Test
+    void userCantGoBeforePageOne() {
+        // set up expected view
+        when(fizzBuzzClient.getPage(eq(5), eq(1)))
+                .thenReturn(BROWSE_FIRST_PAGE_RESPONSE);
+        // set up user commands
+        when(userInputReader.getUserInput())
+                .thenReturn("p", "exit");
+        appProcess.execute(List.of("browse"));
+
+        verify(fizzBuzzClient, times(2)).getPage(5, 1);
+        final var userOutputCaptor = ArgumentCaptor.forClass(String.class);
+        verify(userOutputWriter, times(2))
+                .printToUser(userOutputCaptor.capture());
+        assertAllRenderedScreensMatchSnapShot(userOutputCaptor);
+    }
+
+    @Test
     void userCanChangePageSize() {
         // set up expected view
         when(fizzBuzzClient.getPage(eq(5), eq(1)))
@@ -165,6 +182,23 @@ public class BrowseTest {
                 .printToUser(userOutputCaptor.capture());
         assertAllRenderedScreensMatchSnapShot(userOutputCaptor);
     }
+
+    @Test
+    void handlesExceptionsWithSimpleMessage() {
+        // set up expected view
+        when(fizzBuzzClient.getPage(eq(5), eq(1)))
+                .thenThrow(new RuntimeException("Test Generated Exception!"));
+        // set up user commands
+        when(userInputReader.getUserInput())
+                .thenReturn("exit");
+        appProcess.execute(List.of("browse"));
+
+        final var userOutputCaptor = ArgumentCaptor.forClass(String.class);
+        verify(userOutputWriter, times(1))
+                .printToUser(userOutputCaptor.capture());
+        assertAllRenderedScreensMatchSnapShot(userOutputCaptor);
+    }
+
 
     private void assertAllRenderedScreensMatchSnapShot(final ArgumentCaptor<String> argumentCaptor) {
         expect(argumentCaptor.getAllValues().stream().map(String::trim).collect(toList())).toMatchSnapshot();
