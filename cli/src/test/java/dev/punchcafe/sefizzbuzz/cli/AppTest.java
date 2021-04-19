@@ -76,18 +76,4 @@ class AppTest {
         verify(userOutputWriter, times(1))
                 .printToUser("Result:  id: 15,  value: FizzBuzz");
     }
-
-    @Test
-    void userCanBrowse() {
-        // set up expected view
-        when(fizzBuzzClient.getPage(eq(5), eq(1)))
-                .thenReturn(BROWSE_FIRST_PAGE_RESPONSE);
-        // set up user command
-        when(userInputReader.getUserInput())
-                .thenReturn("exit");
-        appProcess.execute(List.of("browse"));
-        verify(fizzBuzzClient, times(1)).getPage(5, 1);
-        verify(userOutputWriter, times(1))
-                .printToUser("Result:  id: 15,  value: FizzBuzz");
-    }
 }
