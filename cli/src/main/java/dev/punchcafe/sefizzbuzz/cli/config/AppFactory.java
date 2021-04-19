@@ -29,6 +29,10 @@ public class AppFactory {
         final var browse = Browse.builder()
                 .fizzBuzzClient(config.getFizzBuzzClient())
                 .userOutputWriter(config.getUserOutputWriter())
+                .userInputReader(config.getUserInputReader())
+                // defaults
+                .page(1)
+                .pageSize(17)
                 .build();
         final var rootProcess = OptionSelector.builder()
                 .processName("main")

@@ -6,6 +6,7 @@ package dev.punchcafe.sefizzbuzz.cli;
 import dev.punchcafe.sefizzbuzz.cli.client.FizzBuzzClient;
 import dev.punchcafe.sefizzbuzz.cli.config.AppConfig;
 import dev.punchcafe.sefizzbuzz.cli.config.AppFactory;
+import dev.punchcafe.sefizzbuzz.cli.io.UserInputReader;
 import dev.punchcafe.sefizzbuzz.cli.io.UserOutputWriter;
 import feign.Feign;
 import feign.gson.GsonDecoder;
@@ -20,6 +21,7 @@ public class App {
         UserOutputWriter mockOutput = new UserOutputWriter();
         final var appConfig = AppConfig.builder()
                 .userOutputWriter(mockOutput)
+                .userInputReader(new UserInputReader())
                 .fizzBuzzClient(Feign.builder()
                         .client(new OkHttpClient())
                         .encoder(new GsonEncoder())

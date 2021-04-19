@@ -13,17 +13,28 @@ public class PageRenderer {
 
     private static String VALUE_ELEMENT_WIDTH = "                    ";
     private static int FIZZBUZZ_PER_COLUMN = 3;
+    private static String CLEAR_PAGE_BLOCK =
+            "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+                    + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+                    + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+                    + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+                    + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
-    public static String renderPage(final List<FizzBuzzEntity> entities, final PageResponse.PageData pageData) {
+    static String renderPage(final List<FizzBuzzEntity> entities, final PageResponse.PageData pageData) {
         return Optional.of(renderFizzBuzzPage(entities))
                 .map(entitiesPage -> prependPageData(entitiesPage, pageData))
                 .map(PageRenderer::appendInstructions)
+                .map(PageRenderer::prependScreenClear)
                 .get();
     }
 
     private static String renderFizzBuzzPage(final List<FizzBuzzEntity> entities) {
         return splitFizzBuzzesIntoLines(entities)
                 .collect(Collectors.joining("\n"));
+    }
+
+    private static String prependScreenClear(String string) {
+        return CLEAR_PAGE_BLOCK + string;
     }
 
     private static String renderFizzBuzzEntity(final FizzBuzzEntity entity) {
