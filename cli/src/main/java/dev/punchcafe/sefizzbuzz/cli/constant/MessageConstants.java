@@ -12,5 +12,7 @@ public interface MessageConstants {
         + "***       calculate NUM - calculates fizzbuzz of NUM         ***\n"
         + "***       favourite NUM - favourites fizzbuzz of NUM         ***\n"
         + "***       unfavourite NUM - unfavourites fizzbuzz of NUM     ***\n"
+        + "***                                                          ***\n"
+        + "****************************************************************\n"
         + "****************************************************************\n";
 }
