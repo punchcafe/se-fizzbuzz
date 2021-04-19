@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 
 import java.util.List;
 
+import static dev.punchcafe.sefizzbuzz.cli.config.Defaults.DEFAULT_BROWSE_PAGE_SIZE;
+import static dev.punchcafe.sefizzbuzz.cli.config.Defaults.DEFAULT_BROWSE_STARTING_PAGE;
+
 @AllArgsConstructor
 public class AppFactory {
 
@@ -30,9 +33,8 @@ public class AppFactory {
                 .fizzBuzzClient(config.getFizzBuzzClient())
                 .userOutputWriter(config.getUserOutputWriter())
                 .userInputReader(config.getUserInputReader())
-                // defaults
-                .page(1)
-                .pageSize(17)
+                .page(DEFAULT_BROWSE_STARTING_PAGE)
+                .pageSize(DEFAULT_BROWSE_PAGE_SIZE)
                 .build();
         final var rootProcess = OptionSelector.builder()
                 .processName("main")

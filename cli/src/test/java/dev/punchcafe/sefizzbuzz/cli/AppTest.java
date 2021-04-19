@@ -8,6 +8,7 @@ import dev.punchcafe.sefizzbuzz.cli.client.FizzBuzzClient;
 import dev.punchcafe.sefizzbuzz.cli.client.FizzBuzzEntity;
 import dev.punchcafe.sefizzbuzz.cli.config.AppConfig;
 import dev.punchcafe.sefizzbuzz.cli.config.AppFactory;
+import dev.punchcafe.sefizzbuzz.cli.io.UserInputReader;
 import dev.punchcafe.sefizzbuzz.cli.io.UserOutputWriter;
 import dev.punchcafe.sefizzbuzz.cli.process.AppProcess;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
+import static dev.punchcafe.sefizzbuzz.cli.TestConstants.BROWSE_FIRST_PAGE_RESPONSE;
 import static dev.punchcafe.sefizzbuzz.cli.constant.MessageConstants.HELP_MESSAGE;
 import static org.mockito.Mockito.*;
 
@@ -23,14 +25,17 @@ class AppTest {
 
     private FizzBuzzClient fizzBuzzClient;
     private UserOutputWriter userOutputWriter;
+    private UserInputReader userInputReader;
     private AppProcess appProcess;
 
     @BeforeEach
     void beforeEach() {
         userOutputWriter = Mockito.spy(new UserOutputWriter());
+        userInputReader = Mockito.mock(UserInputReader.class);
         fizzBuzzClient = Mockito.mock(FizzBuzzClient.class);
         final var appConfig = AppConfig.builder()
                 .userOutputWriter(userOutputWriter)
+                .userInputReader(userInputReader)
                 .fizzBuzzClient(fizzBuzzClient)
                 .build();
         appProcess = new AppFactory(appConfig).buildApp();
@@ -68,6 +73,20 @@ class AppTest {
                 .thenReturn(new FizzBuzzEntity(15, "FizzBuzz", false));
         appProcess.execute(List.of("unfavourite", "15"));
         verify(fizzBuzzClient, times(1)).updateFavourite(15, FavouritePayload.buildFrom(false));
+        verify(userOutputWriter, times(1))
+                .printToUser("Result:  id: 15,  value: FizzBuzz");
+    }
+
+    @Test
+    void userCanBrowse() {
+        // set up expected view
+        when(fizzBuzzClient.getPage(eq(5), eq(1)))
+                .thenReturn(BROWSE_FIRST_PAGE_RESPONSE);
+        // set up user command
+        when(userInputReader.getUserInput())
+                .thenReturn("exit");
+        appProcess.execute(List.of("browse"));
+        verify(fizzBuzzClient, times(1)).getPage(5, 1);
         verify(userOutputWriter, times(1))
                 .printToUser("Result:  id: 15,  value: FizzBuzz");
     }

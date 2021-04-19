@@ -21,7 +21,7 @@ public class Browse implements AppProcess {
     private static String EXIT = "exit";
     private static String HELP = "help";
     private static String HELP_MESSAGE = "available commands are: p, n, psize NUM, pjump NUM, help, exit";
-    // default to page one
+
     private int page;
     private int pageSize;
     private UserOutputWriter userOutputWriter;

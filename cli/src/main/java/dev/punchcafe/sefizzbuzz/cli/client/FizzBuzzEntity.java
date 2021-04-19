@@ -1,9 +1,9 @@
 package dev.punchcafe.sefizzbuzz.cli.client;
 
 import lombok.AllArgsConstructor;
-import lombok.Value;
+import lombok.Getter;
 
-@Value
+@Getter
 @AllArgsConstructor
 public class FizzBuzzEntity {
     private final int id;
