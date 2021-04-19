@@ -9,5 +9,8 @@ public interface MessageConstants {
         + "***                                                          ***\n"
         + "***   available commands:                                    ***\n"
         + "***       help - see all available options                   ***\n"
+        + "***       calculate NUM - calculates fizzbuzz of NUM         ***\n"
+        + "***       favourite NUM - favourites fizzbuzz of NUM         ***\n"
+        + "***       unfavourite NUM - unfavourites fizzbuzz of NUM     ***\n"
         + "****************************************************************\n";
 }
