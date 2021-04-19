@@ -18,9 +18,10 @@ import java.util.Arrays;
 public class App {
 
     public static void main(String[] args) {
-        UserOutputWriter mockOutput = new UserOutputWriter();
+        UserOutputWriter userOutputWriter = new UserOutputWriter();
+
         final var appConfig = AppConfig.builder()
-                .userOutputWriter(mockOutput)
+                .userOutputWriter(userOutputWriter)
                 .userInputReader(new UserInputReader())
                 .fizzBuzzClient(Feign.builder()
                         .client(new OkHttpClient())
@@ -28,6 +29,7 @@ public class App {
                         .decoder(new GsonDecoder())
                         .target(FizzBuzzClient.class, "http://localhost:4000"))
                 .build();
+
         final var app = new AppFactory(appConfig).buildApp();
         app.execute(Arrays.asList(args));
     }

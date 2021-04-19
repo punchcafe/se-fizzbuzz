@@ -37,7 +37,7 @@ public class AppFactory {
                 .pageSize(DEFAULT_BROWSE_PAGE_SIZE)
                 .build();
         final var rootProcess = OptionSelector.builder()
-                .processName("main")
+                .processName("root")
                 .subAppProcesses(List.of(helpCommand, calculateCommand, favouriteCommand, unfavouriteCommand, browse)).build();
         return rootProcess;
     }
