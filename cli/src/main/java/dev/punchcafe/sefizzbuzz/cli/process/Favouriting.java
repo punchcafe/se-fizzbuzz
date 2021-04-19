@@ -6,6 +6,8 @@ import dev.punchcafe.sefizzbuzz.cli.client.FizzBuzzEntity;
 import dev.punchcafe.sefizzbuzz.cli.exception.ArgumentNeededException;
 import dev.punchcafe.sefizzbuzz.cli.exception.UnknownArgumentException;
 import dev.punchcafe.sefizzbuzz.cli.io.UserOutputWriter;
+import dev.punchcafe.sefizzbuzz.cli.utils.ArgumentValidators;
+import dev.punchcafe.sefizzbuzz.cli.utils.Formatting;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,21 +31,12 @@ public class Favouriting implements AppProcess {
 
     @Override
     public void execute(List<String> args) {
-        if (args.size() == 0) {
-            throw new ArgumentNeededException();
-        } else if (args.size() > 1) {
-            throw new UnknownArgumentException(String.join(" ", args.subList(1, args.size())));
-        }
+        ArgumentValidators.assertHasExactlyOneArgument(args);
         args.stream()
                 .map(Integer::parseInt)
                 .map(id -> client.updateFavourite(id, FavouritePayload.buildFrom(this.isFavourite)))
-                .map(this::formatFizzBuzzValue)
+                .map(Formatting::formatFizzBuzzValue)
                 .findAny()
                 .ifPresent(out::printToUser);
     }
-
-    private String formatFizzBuzzValue(final FizzBuzzEntity entity) {
-        return String.format("Result:  id: %d,  value: %s", entity.getId(), entity.getValue());
-    }
-
 }

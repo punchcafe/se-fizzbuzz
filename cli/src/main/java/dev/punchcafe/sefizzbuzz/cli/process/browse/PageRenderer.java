@@ -9,16 +9,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static dev.punchcafe.sefizzbuzz.cli.process.browse.RenderConstants.*;
+
 public class PageRenderer {
 
-    private static String VALUE_ELEMENT_WIDTH = "                    ";
-    private static int FIZZBUZZ_PER_COLUMN = 3;
-    private static String CLEAR_PAGE_BLOCK =
-            "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-                    + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-                    + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-                    + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-                    + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+    static String renderHelpMessage() {
+        return HELP_MESSAGE;
+    }
 
     static String renderPage(final List<FizzBuzzEntity> entities, final PageResponse.PageData pageData) {
         return Optional.of(renderFizzBuzzPage(entities))
@@ -29,31 +26,11 @@ public class PageRenderer {
     }
 
     private static String renderFizzBuzzPage(final List<FizzBuzzEntity> entities) {
-        return splitFizzBuzzesIntoLines(entities)
+        return splitFizzBuzzesIntoRenderedRows(entities)
                 .collect(Collectors.joining("\n"));
     }
 
-    private static String prependScreenClear(String string) {
-        return CLEAR_PAGE_BLOCK + string;
-    }
-
-    private static String renderFizzBuzzEntity(final FizzBuzzEntity entity) {
-        final var missingAmountOfWhiteSpace = VALUE_ELEMENT_WIDTH.length() - entity.getValue().length();
-        final var formattedName = entity.getValue() + VALUE_ELEMENT_WIDTH.substring(0, missingAmountOfWhiteSpace);
-        return String.format("%d%s. %s  ", entity.getId(), entity.is_favourite() ? "*" : " ", formattedName);
-    }
-
-    private static String prependPageData(final String string, final PageResponse.PageData pageData) {
-        System.out.println(pageData);
-        return "PAGE     : " + pageData.getPage_number() + "Displaying : " + pageData.getPage_size() + "entities per page \n"
-                + string;
-    }
-
-    private static String appendInstructions(final String string) {
-        return string + "\n enter help for list of instructions";
-    }
-
-    private static Stream<String> splitFizzBuzzesIntoLines(final List<FizzBuzzEntity> entities) {
+    private static Stream<String> splitFizzBuzzesIntoRenderedRows(final List<FizzBuzzEntity> entities) {
         final List<Stream<FizzBuzzEntity>> rowsOfEntities = new ArrayList<>();
         final var completeRows = entities.size() / FIZZBUZZ_PER_COLUMN;
         final var lastRowSize = entities.size() % FIZZBUZZ_PER_COLUMN;
@@ -70,4 +47,27 @@ public class PageRenderer {
                 .map(row -> row.map(PageRenderer::renderFizzBuzzEntity)
                         .collect(Collectors.joining()));
     }
+
+    private static String prependPageData(final String string, final PageResponse.PageData pageData) {
+        return String.format("PAGE     :  %d  Displaying : %d entities per page \n %s",
+                pageData.getPage_number(),
+                pageData.getPage_size(),
+                string);
+    }
+
+    private static String prependScreenClear(String string) {
+        return CLEAR_PAGE_BLOCK + string;
+    }
+
+    private static String renderFizzBuzzEntity(final FizzBuzzEntity entity) {
+        final var missingAmountOfWhiteSpace = VALUE_ELEMENT_WIDTH.length() - entity.getValue().length();
+        final var formattedName = entity.getValue() + VALUE_ELEMENT_WIDTH.substring(0, missingAmountOfWhiteSpace);
+        final var favouriteSymbol = entity.is_favourite() ? FAVOURITE_FIZZ_BUZZ_SYMBOL : NOT_FAVOURITE_FIZZ_BUZZ_SYMBOL;
+        return String.format("%d%s. %s  ", entity.getId(), favouriteSymbol, formattedName);
+    }
+
+    private static String appendInstructions(final String string) {
+        return string.concat("\n enter help for list of instructions");
+    }
+
 }

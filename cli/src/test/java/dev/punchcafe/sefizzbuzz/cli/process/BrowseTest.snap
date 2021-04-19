@@ -7,7 +7,7 @@ dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.handlesExceptionsWithSimpleMessa
 
 dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.onUnknownCommandUserIsPromptedAgain=[
   [
-    "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
+    "PAGE     :  1  Displaying : 5 entities per page \n 1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
     "available commands are: p, n, psize NUM, pjump NUM, help, exit"
   ]
 ]
@@ -15,47 +15,47 @@ dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.onUnknownCommandUserIsPromptedAg
 
 dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCanBrowse=[
   [
-    "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions"
+    "PAGE     :  1  Displaying : 5 entities per page \n 1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions"
   ]
 ]
 
 
 dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCanChangePage=[
   [
-    "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
-    "PAGE     : 2Displaying : 5entities per page \n6 . Fizz                  7 . 7                     8 . 8                     \n9 . Fizz                  10 . Buzz                  \n enter help for list of instructions"
+    "PAGE     :  1  Displaying : 5 entities per page \n 1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
+    "PAGE     :  2  Displaying : 5 entities per page \n 6 . Fizz                  7 . 7                     8 . 8                     \n9 . Fizz                  10 . Buzz                  \n enter help for list of instructions"
   ]
 ]
 
 
 dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCanChangePageAndReturn=[
   [
-    "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
-    "PAGE     : 2Displaying : 5entities per page \n6 . Fizz                  7 . 7                     8 . 8                     \n9 . Fizz                  10 . Buzz                  \n enter help for list of instructions",
-    "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions"
+    "PAGE     :  1  Displaying : 5 entities per page \n 1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
+    "PAGE     :  2  Displaying : 5 entities per page \n 6 . Fizz                  7 . 7                     8 . 8                     \n9 . Fizz                  10 . Buzz                  \n enter help for list of instructions",
+    "PAGE     :  1  Displaying : 5 entities per page \n 1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions"
   ]
 ]
 
 
 dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCanChangePageSize=[
   [
-    "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
-    "PAGE     : 1Displaying : 6entities per page \n1 . 1                     2 . 2                     3*. Fizz                  \n4 . 4                     5 . Buzz                  6 . Fizz                  \n enter help for list of instructions"
+    "PAGE     :  1  Displaying : 5 entities per page \n 1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
+    "PAGE     :  1  Displaying : 6 entities per page \n 1 . 1                     2 . 2                     3*. Fizz                  \n4 . 4                     5 . Buzz                  6 . Fizz                  \n enter help for list of instructions"
   ]
 ]
 
 
 dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCanJumpPages=[
   [
-    "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
-    "PAGE     : 3Displaying : 5entities per page \n11 . 11                    12 . Fizz                  13 . 13                    \n14 . 14                    15 . FizzBuzz              \n enter help for list of instructions"
+    "PAGE     :  1  Displaying : 5 entities per page \n 1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
+    "PAGE     :  3  Displaying : 5 entities per page \n 11 . 11                    12 . Fizz                  13 . 13                    \n14 . 14                    15 . FizzBuzz              \n enter help for list of instructions"
   ]
 ]
 
 
 dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCanQueryHelp=[
   [
-    "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
+    "PAGE     :  1  Displaying : 5 entities per page \n 1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
     "available commands are: p, n, psize NUM, pjump NUM, help, exit"
   ]
 ]
@@ -63,7 +63,7 @@ dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCanQueryHelp=[
 
 dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCantGoBeforePageOne=[
   [
-    "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
-    "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions"
+    "PAGE     :  1  Displaying : 5 entities per page \n 1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
+    "PAGE     :  1  Displaying : 5 entities per page \n 1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions"
   ]
 ]

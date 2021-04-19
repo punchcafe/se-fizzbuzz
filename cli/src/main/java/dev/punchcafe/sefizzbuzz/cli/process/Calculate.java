@@ -5,6 +5,8 @@ import dev.punchcafe.sefizzbuzz.cli.client.FizzBuzzEntity;
 import dev.punchcafe.sefizzbuzz.cli.exception.ArgumentNeededException;
 import dev.punchcafe.sefizzbuzz.cli.exception.UnknownArgumentException;
 import dev.punchcafe.sefizzbuzz.cli.io.UserOutputWriter;
+import dev.punchcafe.sefizzbuzz.cli.utils.ArgumentValidators;
+import dev.punchcafe.sefizzbuzz.cli.utils.Formatting;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -27,20 +29,12 @@ public class Calculate implements AppProcess {
 
     @Override
     public void execute(List<String> args) {
-        if (args.size() == 0) {
-            throw new ArgumentNeededException();
-        } else if (args.size() > 1) {
-            throw new UnknownArgumentException(String.join(" ", args.subList(1, args.size())));
-        }
+        ArgumentValidators.assertHasExactlyOneArgument(args);
         args.stream()
                 .map(Integer::parseInt)
                 .map(client::calculate)
-                .map(this::formatFizzBuzzValue)
+                .map(Formatting::formatFizzBuzzValue)
                 .findAny()
                 .ifPresent(out::printToUser);
-    }
-
-    private String formatFizzBuzzValue(final FizzBuzzEntity entity) {
-        return String.format("Result:  id: %d,  value: %s", entity.getId(), entity.getValue());
     }
 }

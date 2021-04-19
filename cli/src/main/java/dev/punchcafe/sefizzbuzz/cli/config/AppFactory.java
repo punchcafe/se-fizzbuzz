@@ -33,7 +33,7 @@ public class AppFactory {
                 .fizzBuzzClient(config.getFizzBuzzClient())
                 .userOutputWriter(config.getUserOutputWriter())
                 .userInputReader(config.getUserInputReader())
-                .page(DEFAULT_BROWSE_STARTING_PAGE)
+                .pageNumber(DEFAULT_BROWSE_STARTING_PAGE)
                 .pageSize(DEFAULT_BROWSE_PAGE_SIZE)
                 .build();
         final var rootProcess = OptionSelector.builder()
