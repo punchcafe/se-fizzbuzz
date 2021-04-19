@@ -34,7 +34,7 @@ public class Browse implements AppProcess {
     private String renderFizzBuzzEntity(final FizzBuzzEntity entity){
         final var missingAmountOfWhiteSpace = VALUE_ELEMENT_WIDTH.length() - entity.getValue().length();
         final var formattedName = entity.getValue() + VALUE_ELEMENT_WIDTH.substring(0, missingAmountOfWhiteSpace);
-        return String.format("%d . %s %s  ", entity.getId(), formattedName, entity.is_favourite() ? "*":" ");
+        return String.format("%d%s. %s  ", entity.getId(), entity.is_favourite() ? "*":" ", formattedName);
     }
 
     @Override
