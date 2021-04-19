@@ -16,8 +16,9 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
-import static dev.punchcafe.sefizzbuzz.cli.TestConstants.BROWSE_FIRST_PAGE_RESPONSE;
+import static dev.punchcafe.sefizzbuzz.cli.TestConstants.*;
 import static io.github.jsonSnapshot.SnapshotMatcher.*;
+import static java.util.stream.Collectors.toList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -30,12 +31,12 @@ public class BrowseTest {
     private AppProcess appProcess;
 
     @BeforeAll
-    static void beforeAll(){
+    static void beforeAll() {
         start(SnapshotConfig::asJsonString);
     }
 
     @AfterAll
-    static void afterAll(){
+    static void afterAll() {
         validateSnapshots();
     }
 
@@ -65,6 +66,107 @@ public class BrowseTest {
         final var userOutputCaptor = ArgumentCaptor.forClass(String.class);
         verify(userOutputWriter, times(1))
                 .printToUser(userOutputCaptor.capture());
-        expect(userOutputCaptor.getValue()).toMatchSnapshot();
+        assertAllRenderedScreensMatchSnapShot(userOutputCaptor);
+    }
+
+    @Test
+    void userCanQueryHelp() {
+        // set up expected view
+        when(fizzBuzzClient.getPage(eq(5), eq(1)))
+                .thenReturn(BROWSE_FIRST_PAGE_RESPONSE);
+        // set up user command
+        when(userInputReader.getUserInput())
+                .thenReturn("help", "exit");
+        appProcess.execute(List.of("browse"));
+        verify(fizzBuzzClient, times(1)).getPage(5, 1);
+        final var userOutputCaptor = ArgumentCaptor.forClass(String.class);
+        verify(userOutputWriter, times(2))
+                .printToUser(userOutputCaptor.capture());
+        assertAllRenderedScreensMatchSnapShot(userOutputCaptor);
+    }
+
+    @Test
+    void userCanChangePage() {
+        // set up expected view
+        when(fizzBuzzClient.getPage(eq(5), eq(1)))
+                .thenReturn(BROWSE_FIRST_PAGE_RESPONSE);
+        when(fizzBuzzClient.getPage(eq(5), eq(2)))
+                .thenReturn(BROWSE_SECOND_PAGE_RESPONSE);
+        // set up user commands
+        when(userInputReader.getUserInput())
+                .thenReturn("n", "exit");
+        appProcess.execute(List.of("browse"));
+
+        verify(fizzBuzzClient, times(1)).getPage(5, 1);
+        final var userOutputCaptor = ArgumentCaptor.forClass(String.class);
+        verify(userOutputWriter, times(2))
+                .printToUser(userOutputCaptor.capture());
+        assertAllRenderedScreensMatchSnapShot(userOutputCaptor);
+    }
+
+    @Test
+    void userCanChangePageAndReturn() {
+        // set up expected view
+        when(fizzBuzzClient.getPage(eq(5), eq(1)))
+                .thenReturn(BROWSE_FIRST_PAGE_RESPONSE);
+        when(fizzBuzzClient.getPage(eq(5), eq(2)))
+                .thenReturn(BROWSE_SECOND_PAGE_RESPONSE);
+        // set up user commands
+        when(userInputReader.getUserInput())
+                .thenReturn("n", "p", "exit");
+        appProcess.execute(List.of("browse"));
+
+        verify(fizzBuzzClient, times(2)).getPage(5, 1);
+        verify(fizzBuzzClient, times(1)).getPage(5, 2);
+        final var userOutputCaptor = ArgumentCaptor.forClass(String.class);
+        verify(userOutputWriter, times(3))
+                .printToUser(userOutputCaptor.capture());
+        assertAllRenderedScreensMatchSnapShot(userOutputCaptor);
+    }
+
+    @Test
+    void userCanChangePageSize() {
+        // set up expected view
+        when(fizzBuzzClient.getPage(eq(5), eq(1)))
+                .thenReturn(BROWSE_FIRST_PAGE_RESPONSE);
+        when(fizzBuzzClient.getPage(eq(7), eq(1)))
+                .thenReturn(BROWSE_DIFFERENT_SIZE_PAGE_RESPONSE);
+        // set up user commands
+        when(userInputReader.getUserInput())
+                .thenReturn("psize 7", "exit");
+        appProcess.execute(List.of("browse"));
+
+        verify(fizzBuzzClient, times(1)).getPage(5, 1);
+        verify(fizzBuzzClient, times(1)).getPage(7, 1);
+
+        final var userOutputCaptor = ArgumentCaptor.forClass(String.class);
+        verify(userOutputWriter, times(2))
+                .printToUser(userOutputCaptor.capture());
+        assertAllRenderedScreensMatchSnapShot(userOutputCaptor);
+    }
+
+    @Test
+    void userCanJumpPages() {
+        // set up expected view
+        when(fizzBuzzClient.getPage(eq(5), eq(1)))
+                .thenReturn(BROWSE_FIRST_PAGE_RESPONSE);
+        when(fizzBuzzClient.getPage(eq(5), eq(3)))
+                .thenReturn(BROWSE_THIRD_PAGE_RESPONSE);
+        // set up user commands
+        when(userInputReader.getUserInput())
+                .thenReturn("pjump 3", "exit");
+        appProcess.execute(List.of("browse"));
+
+        verify(fizzBuzzClient, times(1)).getPage(5, 1);
+        verify(fizzBuzzClient, times(1)).getPage(5, 3);
+
+        final var userOutputCaptor = ArgumentCaptor.forClass(String.class);
+        verify(userOutputWriter, times(2))
+                .printToUser(userOutputCaptor.capture());
+        assertAllRenderedScreensMatchSnapShot(userOutputCaptor);
+    }
+
+    private void assertAllRenderedScreensMatchSnapShot(final ArgumentCaptor<String> argumentCaptor) {
+        expect(argumentCaptor.getAllValues().stream().map(String::trim).collect(toList())).toMatchSnapshot();
     }
 }
