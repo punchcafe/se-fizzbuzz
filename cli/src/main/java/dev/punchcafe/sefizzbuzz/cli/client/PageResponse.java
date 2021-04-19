@@ -12,12 +12,12 @@ public class PageResponse {
     @AllArgsConstructor
     @Getter
     public static class PageData {
-        private final boolean hasNextPage;
-        private final boolean hasPreviousPage;
-        private final int pageNumber;
-        private final int pageSize;
+        private final boolean has_next_page;
+        private final boolean has_previous_page;
+        private final int page_number;
+        private final int page_size;
     }
 
     private final List<FizzBuzzEntity> data;
-    private final PageData pageData;
+    private final PageData page;
 }

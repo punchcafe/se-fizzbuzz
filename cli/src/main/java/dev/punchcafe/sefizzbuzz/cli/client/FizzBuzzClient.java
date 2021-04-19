@@ -2,7 +2,6 @@ package dev.punchcafe.sefizzbuzz.cli.client;
 
 import feign.Headers;
 import feign.Param;
-import feign.QueryMap;
 import feign.RequestLine;
 
 public interface FizzBuzzClient {
