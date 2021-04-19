@@ -3,6 +3,7 @@
  */
 package dev.punchcafe.sefizzbuzz.cli;
 
+import dev.punchcafe.sefizzbuzz.cli.client.FavouritePayload;
 import dev.punchcafe.sefizzbuzz.cli.client.FizzBuzzClient;
 import dev.punchcafe.sefizzbuzz.cli.client.FizzBuzzEntity;
 import dev.punchcafe.sefizzbuzz.cli.config.AppConfig;
@@ -47,6 +48,26 @@ class AppTest {
                 .thenReturn(new FizzBuzzEntity(15, "FizzBuzz", false));
         appProcess.execute(List.of("calculate", "15"));
         verify(fizzBuzzClient, times(1)).calculate(15);
+        verify(userOutputWriter, times(1))
+                .printToUser("Result:  id: 15,  value: FizzBuzz");
+    }
+
+    @Test
+    void userCanFavouriteFizzBuzz() {
+        when(fizzBuzzClient.updateFavourite(eq(15), eq(FavouritePayload.buildFrom(true))))
+                .thenReturn(new FizzBuzzEntity(15, "FizzBuzz", true));
+        appProcess.execute(List.of("favourite", "15"));
+        verify(fizzBuzzClient, times(1)).updateFavourite(15, FavouritePayload.buildFrom(true));
+        verify(userOutputWriter, times(1))
+                .printToUser("Result:  id: 15,  value: FizzBuzz");
+    }
+
+    @Test
+    void userCanUnfavouriteFizzBuzz() {
+        when(fizzBuzzClient.updateFavourite(eq(15), eq(FavouritePayload.buildFrom(false))))
+                .thenReturn(new FizzBuzzEntity(15, "FizzBuzz", false));
+        appProcess.execute(List.of("unfavourite", "15"));
+        verify(fizzBuzzClient, times(1)).updateFavourite(15, FavouritePayload.buildFrom(false));
         verify(userOutputWriter, times(1))
                 .printToUser("Result:  id: 15,  value: FizzBuzz");
     }
