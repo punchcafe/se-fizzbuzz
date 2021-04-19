@@ -1,4 +1,4 @@
-package dev.punchcafe.sefizzbuzz.cli.snapshot;
+package dev.punchcafe.sefizzbuzz.cli.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;

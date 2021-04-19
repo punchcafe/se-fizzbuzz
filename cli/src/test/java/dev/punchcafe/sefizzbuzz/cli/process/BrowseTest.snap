@@ -1,18 +1,18 @@
-dev.punchcafe.sefizzbuzz.cli.BrowseTest.handlesExceptionsWithSimpleMessage=[
+dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.handlesExceptionsWithSimpleMessage=[
   [
     "something went wrong while browsing: Test Generated Exception!"
   ]
 ]
 
 
-dev.punchcafe.sefizzbuzz.cli.BrowseTest.userCanBrowse=[
+dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCanBrowse=[
   [
     "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions"
   ]
 ]
 
 
-dev.punchcafe.sefizzbuzz.cli.BrowseTest.userCanChangePage=[
+dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCanChangePage=[
   [
     "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
     "PAGE     : 2Displaying : 5entities per page \n6 . Fizz                  7 . 7                     8 . 8                     \n9 . Fizz                  10 . Buzz                  \n enter help for list of instructions"
@@ -20,7 +20,7 @@ dev.punchcafe.sefizzbuzz.cli.BrowseTest.userCanChangePage=[
 ]
 
 
-dev.punchcafe.sefizzbuzz.cli.BrowseTest.userCanChangePageAndReturn=[
+dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCanChangePageAndReturn=[
   [
     "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
     "PAGE     : 2Displaying : 5entities per page \n6 . Fizz                  7 . 7                     8 . 8                     \n9 . Fizz                  10 . Buzz                  \n enter help for list of instructions",
@@ -29,7 +29,7 @@ dev.punchcafe.sefizzbuzz.cli.BrowseTest.userCanChangePageAndReturn=[
 ]
 
 
-dev.punchcafe.sefizzbuzz.cli.BrowseTest.userCanChangePageSize=[
+dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCanChangePageSize=[
   [
     "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
     "PAGE     : 1Displaying : 7entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  6 . Fizz                  \n7 . 7                     \n enter help for list of instructions"
@@ -37,7 +37,7 @@ dev.punchcafe.sefizzbuzz.cli.BrowseTest.userCanChangePageSize=[
 ]
 
 
-dev.punchcafe.sefizzbuzz.cli.BrowseTest.userCanJumpPages=[
+dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCanJumpPages=[
   [
     "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
     "PAGE     : 3Displaying : 5entities per page \n11 . 11                    12 . Fizz                  13 . 13                    \n14 . 14                    15 . FizzBuzz              \n enter help for list of instructions"
@@ -45,7 +45,7 @@ dev.punchcafe.sefizzbuzz.cli.BrowseTest.userCanJumpPages=[
 ]
 
 
-dev.punchcafe.sefizzbuzz.cli.BrowseTest.userCanQueryHelp=[
+dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCanQueryHelp=[
   [
     "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
     "available commands are: p, n, psize NUM, pjump NUM, help, exit"
@@ -53,7 +53,7 @@ dev.punchcafe.sefizzbuzz.cli.BrowseTest.userCanQueryHelp=[
 ]
 
 
-dev.punchcafe.sefizzbuzz.cli.BrowseTest.userCantGoBeforePageOne=[
+dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCantGoBeforePageOne=[
   [
     "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
     "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions"

@@ -1,12 +1,11 @@
-package dev.punchcafe.sefizzbuzz.cli;
+package dev.punchcafe.sefizzbuzz.cli.process;
 
 import dev.punchcafe.sefizzbuzz.cli.client.FizzBuzzClient;
 import dev.punchcafe.sefizzbuzz.cli.config.AppConfig;
 import dev.punchcafe.sefizzbuzz.cli.config.AppFactory;
 import dev.punchcafe.sefizzbuzz.cli.io.UserInputReader;
 import dev.punchcafe.sefizzbuzz.cli.io.UserOutputWriter;
-import dev.punchcafe.sefizzbuzz.cli.process.AppProcess;
-import dev.punchcafe.sefizzbuzz.cli.snapshot.SnapshotConfig;
+import dev.punchcafe.sefizzbuzz.cli.config.SnapshotConfig;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
