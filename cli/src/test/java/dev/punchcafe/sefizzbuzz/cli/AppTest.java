@@ -3,28 +3,51 @@
  */
 package dev.punchcafe.sefizzbuzz.cli;
 
+import dev.punchcafe.sefizzbuzz.cli.client.FizzBuzzClient;
+import dev.punchcafe.sefizzbuzz.cli.client.FizzBuzzEntity;
 import dev.punchcafe.sefizzbuzz.cli.config.AppConfig;
 import dev.punchcafe.sefizzbuzz.cli.config.AppFactory;
 import dev.punchcafe.sefizzbuzz.cli.io.UserOutputWriter;
+import dev.punchcafe.sefizzbuzz.cli.process.AppProcess;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.List;
 
 import static dev.punchcafe.sefizzbuzz.cli.constant.MessageConstants.HELP_MESSAGE;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class AppTest {
 
+    private FizzBuzzClient fizzBuzzClient;
+    private UserOutputWriter userOutputWriter;
+    private AppProcess appProcess;
+
+    @BeforeEach
+    void beforeEach() {
+        userOutputWriter = Mockito.spy(new UserOutputWriter());
+        fizzBuzzClient = Mockito.mock(FizzBuzzClient.class);
+        final var appConfig = AppConfig.builder()
+                .userOutputWriter(userOutputWriter)
+                .fizzBuzzClient(fizzBuzzClient)
+                .build();
+        appProcess = new AppFactory(appConfig).buildApp();
+    }
+
     @Test
     void userCanCallHelpCommand() {
-        UserOutputWriter mockOutput = Mockito.spy(new UserOutputWriter());
-        final var appConfig = AppConfig.builder()
-                .userOutputWriter(mockOutput)
-                .build();
-        final var app = new AppFactory(appConfig).buildApp();
-        app.execute(List.of("help"));
-        verify(mockOutput, times(1)).printToUser(HELP_MESSAGE);
+        appProcess.execute(List.of("help"));
+        verify(userOutputWriter, times(1)).printToUser(HELP_MESSAGE);
+    }
+
+    @Test
+    void userCanCalculateFizzBuzz() {
+        when(fizzBuzzClient.calculate(eq(15)))
+                .thenReturn(new FizzBuzzEntity(15, "FizzBuzz", false));
+        appProcess.execute(List.of("calculate", "15"));
+        verify(fizzBuzzClient, times(1)).calculate(15);
+        verify(userOutputWriter, times(1))
+                .printToUser("Result:  id: 15,  value: FizzBuzz");
     }
 }

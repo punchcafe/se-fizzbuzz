@@ -3,9 +3,14 @@
  */
 package dev.punchcafe.sefizzbuzz.cli;
 
+import dev.punchcafe.sefizzbuzz.cli.client.FizzBuzzClient;
 import dev.punchcafe.sefizzbuzz.cli.config.AppConfig;
 import dev.punchcafe.sefizzbuzz.cli.config.AppFactory;
 import dev.punchcafe.sefizzbuzz.cli.io.UserOutputWriter;
+import feign.Feign;
+import feign.gson.GsonDecoder;
+import feign.gson.GsonEncoder;
+import feign.okhttp.OkHttpClient;
 
 import java.util.Arrays;
 
@@ -15,6 +20,11 @@ public class App {
         UserOutputWriter mockOutput = new UserOutputWriter();
         final var appConfig = AppConfig.builder()
                 .userOutputWriter(mockOutput)
+                .fizzBuzzClient(Feign.builder()
+                        .client(new OkHttpClient())
+                        .encoder(new GsonEncoder())
+                        .decoder(new GsonDecoder())
+                        .target(FizzBuzzClient.class, "http://localhost:4000"))
                 .build();
         final var app = new AppFactory(appConfig).buildApp();
         app.execute(Arrays.asList(args));
