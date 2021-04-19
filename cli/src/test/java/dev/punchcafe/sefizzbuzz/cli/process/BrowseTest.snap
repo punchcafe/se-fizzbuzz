@@ -5,6 +5,14 @@ dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.handlesExceptionsWithSimpleMessa
 ]
 
 
+dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.onUnknownCommandUserIsPromptedAgain=[
+  [
+    "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
+    "available commands are: p, n, psize NUM, pjump NUM, help, exit"
+  ]
+]
+
+
 dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCanBrowse=[
   [
     "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions"
@@ -32,7 +40,7 @@ dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCanChangePageAndReturn=[
 dev.punchcafe.sefizzbuzz.cli.process.BrowseTest.userCanChangePageSize=[
   [
     "PAGE     : 1Displaying : 5entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  \n enter help for list of instructions",
-    "PAGE     : 1Displaying : 7entities per page \n1 . 1                     2 . 2                     3 . Fizz                  \n4 . 4                     5 . Buzz                  6 . Fizz                  \n7 . 7                     \n enter help for list of instructions"
+    "PAGE     : 1Displaying : 6entities per page \n1 . 1                     2 . 2                     3*. Fizz                  \n4 . 4                     5 . Buzz                  6 . Fizz                  \n enter help for list of instructions"
   ]
 ]
 

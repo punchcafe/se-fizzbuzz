@@ -55,8 +55,11 @@ public class Browse implements AppProcess {
                 } else if (changePageNumberMatcher.matches()) {
                     page = Integer.parseInt(changePageNumberMatcher.group(1));
                 } else if (changePageSizeMatcher.matches()) {
-                    System.out.println("you got it!");
                     pageSize = Integer.parseInt(changePageSizeMatcher.group(1));
+                } else {
+                    userOutputWriter.printToUser(HELP_MESSAGE);
+                    command = userInputReader.getUserInput();
+                    continue;
                 }
                 final var nextPage = fizzBuzzClient.getPage(pageSize, page);
                 userOutputWriter.printToUser(renderPage(nextPage.getData(), nextPage.getPage()));

@@ -8,6 +8,9 @@ import dev.punchcafe.sefizzbuzz.cli.client.FizzBuzzClient;
 import dev.punchcafe.sefizzbuzz.cli.client.FizzBuzzEntity;
 import dev.punchcafe.sefizzbuzz.cli.config.AppConfig;
 import dev.punchcafe.sefizzbuzz.cli.config.AppFactory;
+import dev.punchcafe.sefizzbuzz.cli.exception.ArgumentNeededException;
+import dev.punchcafe.sefizzbuzz.cli.exception.MissingCommandException;
+import dev.punchcafe.sefizzbuzz.cli.exception.UnknownArgumentException;
 import dev.punchcafe.sefizzbuzz.cli.io.UserInputReader;
 import dev.punchcafe.sefizzbuzz.cli.io.UserOutputWriter;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +20,7 @@ import org.mockito.Mockito;
 import java.util.List;
 
 import static dev.punchcafe.sefizzbuzz.cli.constant.MessageConstants.HELP_MESSAGE;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class FavouriteTest {
@@ -57,5 +61,25 @@ class FavouriteTest {
         verify(fizzBuzzClient, times(1)).updateFavourite(15, FavouritePayload.buildFrom(false));
         verify(userOutputWriter, times(1))
                 .printToUser("Result:  id: 15,  value: FizzBuzz");
+    }
+
+    @Test
+    void appThrowsExceptionIfUserHasntProvidedFizzBuzzIdOnFavourite() {
+        assertThrows(ArgumentNeededException.class, () -> appProcess.execute(List.of("favourite")));
+    }
+
+    @Test
+    void appThrowsExceptionIfUserHasntProvidedFizzBuzzIdOnUnfavourite() {
+        assertThrows(ArgumentNeededException.class, () -> appProcess.execute(List.of("unfavourite")));
+    }
+
+    @Test
+    void appThrowsExceptionIfUserProvidesExtraArgsOnFavourite() {
+        assertThrows(UnknownArgumentException.class, () -> appProcess.execute(List.of("favourite", "10", "hello")));
+    }
+
+    @Test
+    void appThrowsExceptionIfUserProvidesExtraArgsOnUnfavourite() {
+        assertThrows(UnknownArgumentException.class, () -> appProcess.execute(List.of("unfavourite", "10", "hello")));
     }
 }

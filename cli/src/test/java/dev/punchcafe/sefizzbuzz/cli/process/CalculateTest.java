@@ -3,11 +3,12 @@
  */
 package dev.punchcafe.sefizzbuzz.cli.process;
 
-import dev.punchcafe.sefizzbuzz.cli.client.FavouritePayload;
 import dev.punchcafe.sefizzbuzz.cli.client.FizzBuzzClient;
 import dev.punchcafe.sefizzbuzz.cli.client.FizzBuzzEntity;
 import dev.punchcafe.sefizzbuzz.cli.config.AppConfig;
 import dev.punchcafe.sefizzbuzz.cli.config.AppFactory;
+import dev.punchcafe.sefizzbuzz.cli.exception.ArgumentNeededException;
+import dev.punchcafe.sefizzbuzz.cli.exception.UnknownArgumentException;
 import dev.punchcafe.sefizzbuzz.cli.io.UserInputReader;
 import dev.punchcafe.sefizzbuzz.cli.io.UserOutputWriter;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +17,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
-import static dev.punchcafe.sefizzbuzz.cli.constant.MessageConstants.HELP_MESSAGE;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class CalculateTest {
@@ -47,5 +48,15 @@ class CalculateTest {
         verify(fizzBuzzClient, times(1)).calculate(15);
         verify(userOutputWriter, times(1))
                 .printToUser("Result:  id: 15,  value: FizzBuzz");
+    }
+
+    @Test
+    void appThrowsExceptionIfUserHasntProvidedFizzBuzzIdOnCalculate() {
+        assertThrows(ArgumentNeededException.class, () -> appProcess.execute(List.of("calculate")));
+    }
+
+    @Test
+    void appThrowsExceptionIfUserProvidesExtraArgsOnCalculate() {
+        assertThrows(UnknownArgumentException.class, () -> appProcess.execute(List.of("calculate", "10", "hello")));
     }
 }

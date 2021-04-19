@@ -62,13 +62,12 @@ public interface TestConstants {
     List<FizzBuzzEntity> BROWSE_DIFFERENT_SIZE_PAGE_FIZZ_BUZZ = List.of(
             new FizzBuzzEntity(1, "1", false),
             new FizzBuzzEntity(2, "2", false),
-            new FizzBuzzEntity(3, "Fizz", false),
+            new FizzBuzzEntity(3, "Fizz", true),
             new FizzBuzzEntity(4, "4", false),
             new FizzBuzzEntity(5, "Buzz", false),
-            new FizzBuzzEntity(6, "Fizz", false),
-            new FizzBuzzEntity(7, "7", false));
+            new FizzBuzzEntity(6, "Fizz", false));
 
-    PageResponse.PageData BROWSE_DIFFERENT_SIZE_PAGE_DATA = new PageResponse.PageData(true, false, 1, 7);
+    PageResponse.PageData BROWSE_DIFFERENT_SIZE_PAGE_DATA = new PageResponse.PageData(true, false, 1, 6);
 
     PageResponse BROWSE_DIFFERENT_SIZE_PAGE_RESPONSE = new PageResponse(
             BROWSE_DIFFERENT_SIZE_PAGE_FIZZ_BUZZ,

@@ -6,6 +6,7 @@ package dev.punchcafe.sefizzbuzz.cli.process;
 import dev.punchcafe.sefizzbuzz.cli.client.FizzBuzzClient;
 import dev.punchcafe.sefizzbuzz.cli.config.AppConfig;
 import dev.punchcafe.sefizzbuzz.cli.config.AppFactory;
+import dev.punchcafe.sefizzbuzz.cli.exception.MissingCommandException;
 import dev.punchcafe.sefizzbuzz.cli.exception.UnknownArgumentException;
 import dev.punchcafe.sefizzbuzz.cli.io.UserInputReader;
 import dev.punchcafe.sefizzbuzz.cli.io.UserOutputWriter;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-class HelpTest {
+class RootTest {
 
     private FizzBuzzClient fizzBuzzClient;
     private UserOutputWriter userOutputWriter;
@@ -41,13 +42,12 @@ class HelpTest {
     }
 
     @Test
-    void userCanCallHelpCommand() {
-        appProcess.execute(List.of("help"));
-        verify(userOutputWriter, times(1)).printToUser(HELP_MESSAGE);
+    void appThrowsExceptionIfUserHasntProvidedArgs() {
+        assertThrows(MissingCommandException.class, () -> appProcess.execute(List.of()));
     }
 
     @Test
-    void appThrowsExceptionIfUserProvidesExtraArgsOnHelp() {
-        assertThrows(UnknownArgumentException.class, () -> appProcess.execute(List.of("help", "10")));
+    void appThrowsExceptionIfUserHasProvidedUnknownArgs() {
+        assertThrows(UnknownArgumentException.class, () -> appProcess.execute(List.of("hello-world")));
     }
 }

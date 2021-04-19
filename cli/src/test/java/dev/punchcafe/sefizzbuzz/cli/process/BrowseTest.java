@@ -183,6 +183,24 @@ public class BrowseTest {
     }
 
     @Test
+    void onUnknownCommandUserIsPromptedAgain() {
+        // set up expected view
+        when(fizzBuzzClient.getPage(eq(5), eq(1)))
+                .thenReturn(BROWSE_FIRST_PAGE_RESPONSE);
+        // set up user commands
+        when(userInputReader.getUserInput())
+                .thenReturn("hello", "exit");
+        appProcess.execute(List.of("browse"));
+
+        verify(fizzBuzzClient, times(1)).getPage(5, 1);
+
+        final var userOutputCaptor = ArgumentCaptor.forClass(String.class);
+        verify(userOutputWriter, times(2))
+                .printToUser(userOutputCaptor.capture());
+        assertAllRenderedScreensMatchSnapShot(userOutputCaptor);
+    }
+
+    @Test
     void handlesExceptionsWithSimpleMessage() {
         // set up expected view
         when(fizzBuzzClient.getPage(eq(5), eq(1)))
