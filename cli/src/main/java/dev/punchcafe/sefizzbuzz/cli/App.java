@@ -11,7 +11,6 @@ import dev.punchcafe.sefizzbuzz.cli.io.UserOutputWriter;
 import feign.Feign;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
-import feign.okhttp.OkHttpClient;
 
 import java.util.Arrays;
 
@@ -24,7 +23,6 @@ public class App {
                 .userOutputWriter(userOutputWriter)
                 .userInputReader(new UserInputReader())
                 .fizzBuzzClient(Feign.builder()
-                        .client(new OkHttpClient())
                         .encoder(new GsonEncoder())
                         .decoder(new GsonDecoder())
                         .target(FizzBuzzClient.class, "http://localhost:4000"))

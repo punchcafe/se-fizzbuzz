@@ -32,7 +32,6 @@ jar {
 dependencies {
     compile 'io.github.openfeign:feign-core:9.1.0'
     compile 'io.github.openfeign:feign-gson:9.1.0'
-    compile 'io.github.openfeign:feign-okhttp:9.1.0'
     // Use JUnit Jupiter API for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
 
