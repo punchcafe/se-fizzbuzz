@@ -1,20 +1,39 @@
-# Api
+# FizzBuzz REST api
 
-To start your Phoenix server:
+This is a simple rest API which provides the following end points:
+```
+GET /fizzbuzz/${number}
+// calculate the value of fizzbuzz for $number
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Install Node.js dependencies with `npm install` inside the `assets` directory
-  * Start Phoenix endpoint with `mix phx.server`
+GET /fizzbuzz?page_number=${p_number}&page_size=${p_size} 
+// Paginate fizz buzz results. Default page size is 5, default page number is 1.
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+POST /fizzbuzz/{$number}
+{ "is_favourite" : true }
+// Allows for favouriting of certain fizzbuzz values 
+```
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+## Run on Docker Compose
+To run this application using docker compose, execute in this directory:
+```
+>> $ docker-compose up --build
+```
+This will spin up an instance of the app as well as a backing database. The app will be available on `port 4000`.
 
-## Learn more
+## Building from source
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+In order to build and run locally, you will need a configured instance of postgres running on `port 5432`. Please be aware certain distrobutions can have issues when Pheonix attempts to connect. To build and run the app from source:
+
+```
+>> $ mix deps.get
+>> $ mix ecto.setup
+>> $ mix phx.server
+```
+
+## Testing Locally
+
+In order to test locally you will need to configure an instance of postgres running on `port 5432`. Please be aware certain distrobutions can have issues when Pheonix attempts to connect. To run tests with coverage, execute:
+
+```
+>> $ mix test --cover
+```
