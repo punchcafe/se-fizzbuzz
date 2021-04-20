@@ -17,28 +17,30 @@ public class OptionSelector implements AppProcess {
 
     @Override
     public void execute(List<String> args) {
+        final var selectedCommand = extractSelectedCommand(args);
+        final var selectedProcess = subAppProcesses.stream()
+                .filter(appProcess -> this.processMatchesCommand(appProcess, selectedCommand))
+                .findFirst();
+        if (selectedProcess.isEmpty()) {
+            throw new UnknownArgumentException(selectedCommand);
+        }
+        selectedProcess.get().execute(extractRemainingArgs(args));
+    }
+
+    private String extractSelectedCommand(List<String> args){
         if (args.size() == 0) {
             throw new MissingCommandException(subAppProcesses.stream()
                     .map(AppProcess::getProcessName)
                     .collect(Collectors.toList()));
         }
+        return args.get(0);
+    }
 
-        final var selectedCommand = args.get(0);
+    private List<String> extractRemainingArgs(final List<String> args){
+        return args.size() > 1 ? args.subList(1, args.size()) : List.of();
+    }
 
-        final var selectedProcess = subAppProcesses.stream()
-                .filter(appProcess -> selectedCommand.toLowerCase().equals(appProcess.getProcessName().toLowerCase()))
-                .findFirst();
-
-        if (selectedProcess.isEmpty()) {
-            throw new UnknownArgumentException(selectedCommand);
-        }
-        final List<String> remainingArgs;
-        if (args.size() > 1) {
-            remainingArgs = args.subList(1, args.size());
-        } else {
-            remainingArgs = List.of();
-        }
-
-        selectedProcess.get().execute(remainingArgs);
+    private boolean processMatchesCommand(final AppProcess process, final String selectedCommand){
+        return selectedCommand.toLowerCase().equals(process.getProcessName().toLowerCase());
     }
 }

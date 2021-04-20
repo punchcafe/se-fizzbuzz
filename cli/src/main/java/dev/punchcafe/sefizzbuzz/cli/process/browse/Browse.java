@@ -52,8 +52,7 @@ public class Browse implements AppProcess {
             final var changePageNumberMatcher = CHANGE_PAGE.matcher(command);
             final var changePageSizeMatcher = CHANGE_PAGE_SIZE.matcher(command);
             if (HELP.equals(command)) {
-                userOutputWriter.printToUser(PageRenderer.renderHelpMessage());
-                command = userInputReader.getUserInput();
+                command = retryUserInputWithHelpMessage();
                 continue;
             } else if (NEXT_PAGE.equals(command)) {
                 pageNumber++;
@@ -66,13 +65,17 @@ public class Browse implements AppProcess {
             } else if (changePageSizeMatcher.matches()) {
                 pageSize = Integer.parseInt(changePageSizeMatcher.group(1));
             } else {
-                userOutputWriter.printToUser(PageRenderer.renderHelpMessage());
-                command = userInputReader.getUserInput();
+                command = retryUserInputWithHelpMessage();
                 continue;
             }
             final var nextPage = fizzBuzzClient.getPage(pageSize, pageNumber);
             userOutputWriter.printToUser(renderPage(nextPage.getData(), nextPage.getPage()));
             command = userInputReader.getUserInput();
         }
+    }
+
+    private String retryUserInputWithHelpMessage(){
+        userOutputWriter.printToUser(PageRenderer.renderHelpMessage());
+        return userInputReader.getUserInput();
     }
 }

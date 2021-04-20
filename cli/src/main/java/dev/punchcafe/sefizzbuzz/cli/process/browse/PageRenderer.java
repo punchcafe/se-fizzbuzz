@@ -11,41 +11,46 @@ import java.util.stream.Stream;
 
 import static dev.punchcafe.sefizzbuzz.cli.process.browse.RenderConstants.*;
 
-public class PageRenderer {
+interface PageRenderer {
 
     static String renderHelpMessage() {
         return HELP_MESSAGE;
     }
 
     static String renderPage(final List<FizzBuzzEntity> entities, final PageResponse.PageData pageData) {
-        return Optional.of(renderFizzBuzzPage(entities))
+        return Optional.of(renderFizzBuzzPageOf(entities))
                 .map(entitiesPage -> prependPageData(entitiesPage, pageData))
-                .map(PageRenderer::appendInstructions)
                 .map(PageRenderer::prependScreenClear)
+                .map(PageRenderer::appendInstructions)
                 .get();
     }
 
-    private static String renderFizzBuzzPage(final List<FizzBuzzEntity> entities) {
+    private static String renderFizzBuzzPageOf(final List<FizzBuzzEntity> entities) {
         return splitFizzBuzzesIntoRenderedRows(entities)
                 .collect(Collectors.joining("\n"));
     }
 
     private static Stream<String> splitFizzBuzzesIntoRenderedRows(final List<FizzBuzzEntity> entities) {
-        final List<Stream<FizzBuzzEntity>> rowsOfEntities = new ArrayList<>();
+        final List<List<FizzBuzzEntity>> rowsOfEntities = new ArrayList<>();
         final var completeRows = entities.size() / FIZZBUZZ_PER_COLUMN;
         final var lastRowSize = entities.size() % FIZZBUZZ_PER_COLUMN;
         for (int i = 0; i < completeRows; i++) {
             final var startIndex = i * FIZZBUZZ_PER_COLUMN;
             final var endIndexExclusive = startIndex + FIZZBUZZ_PER_COLUMN;
-            rowsOfEntities.add(entities.subList(startIndex, endIndexExclusive).stream());
+            rowsOfEntities.add(entities.subList(startIndex, endIndexExclusive));
         }
         if (lastRowSize > 0) {
-            final Stream<FizzBuzzEntity> lastRow = entities.subList(entities.size() - lastRowSize, entities.size()).stream();
+            var lastRow = entities.subList(entities.size() - lastRowSize, entities.size());
             rowsOfEntities.add(lastRow);
         }
         return rowsOfEntities.stream()
-                .map(row -> row.map(PageRenderer::renderFizzBuzzEntity)
-                        .collect(Collectors.joining()));
+                .map(PageRenderer::renderFizzBuzzRow);
+    }
+
+    private static String renderFizzBuzzRow(final List<FizzBuzzEntity> fizzBuzzRow){
+        return fizzBuzzRow.stream()
+                .map(PageRenderer::renderFizzBuzzEntity)
+                .collect(Collectors.joining());
     }
 
     private static String prependPageData(final String string, final PageResponse.PageData pageData) {

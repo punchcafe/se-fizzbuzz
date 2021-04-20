@@ -1,6 +1,5 @@
 package dev.punchcafe.sefizzbuzz.cli.process;
 
-import dev.punchcafe.sefizzbuzz.cli.exception.UnknownArgumentException;
 import dev.punchcafe.sefizzbuzz.cli.io.UserOutputWriter;
 import dev.punchcafe.sefizzbuzz.cli.utils.ArgumentValidators;
 import lombok.AllArgsConstructor;
