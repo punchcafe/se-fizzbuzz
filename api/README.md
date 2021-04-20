@@ -8,7 +8,7 @@ GET /fizzbuzz/${number}
 GET /fizzbuzz?page_number=${p_number}&page_size=${p_size} 
 // Paginate fizz buzz results. Default page size is 5, default page number is 1.
 
-POST /fizzbuzz/{$number}
+POST /fizzbuzz/${number}
 { "is_favourite" : true }
 // Allows for favouriting of certain fizzbuzz values 
 ```
@@ -22,7 +22,7 @@ This will spin up an instance of the app as well as a backing database. The app 
 
 ## Building from source
 
-In order to build and run locally, you will need a configured instance of postgres running on `port 5432`. Please be aware certain distrobutions can have issues when Pheonix attempts to connect. To build and run the app from source:
+In order to build and run locally, you will need a configured instance of postgres running on `port 5432`. Please be aware certain distributions can have issues when Pheonix attempts to connect. To build and run the app from source:
 
 ```
 >> $ mix deps.get
@@ -32,7 +32,7 @@ In order to build and run locally, you will need a configured instance of postgr
 
 ## Testing Locally
 
-In order to test locally you will need to configure an instance of postgres running on `port 5432`. Please be aware certain distrobutions can have issues when Pheonix attempts to connect. To run tests with coverage, execute:
+In order to test locally you will need to configure an instance of postgres running on `port 5432`. Please be aware certain distributions can have issues when Pheonix attempts to connect. To run tests with coverage, execute:
 
 ```
 >> $ mix test --cover
