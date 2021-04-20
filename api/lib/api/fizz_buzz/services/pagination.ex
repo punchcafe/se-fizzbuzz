@@ -2,11 +2,11 @@ defmodule FizzBuzz.Services.Pagination do
 
     import Ecto.Query, only: [from: 2]
     
-    def page_fizz_buzz(page_number, page_size) when page_size < 1 or page_size > 200 or page_number < 1 do
+    def page_fizz_buzz!(page_number, page_size) when page_size < 1 or page_size > 200 or page_number < 1 do
         raise IllegalPageParametersError
     end
 
-    def page_fizz_buzz(page_number, page_size) do
+    def page_fizz_buzz!(page_number, page_size) do
       max_fizz_buzz_id = FizzBuzz.Services.fizz_buzz_max()
       start_index = calculate_start_index_from_page_details(page_number, page_size)
       if start_index >max_fizz_buzz_id, do: raise FizzBuzzPageNotFoundError

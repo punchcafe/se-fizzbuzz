@@ -5,14 +5,14 @@ defmodule ApiWeb.FizzBuzzController do
 
   def get(conn, %{"id" => id}) do
     fizz_buzz = String.to_integer(id)
-    |> FizzBuzz.Services.get_fizz_buzz()
+    |> FizzBuzz.Services.get_fizz_buzz!()
     |> return_fizz_buzz_as_json(conn)
   end
 
   def paginate(conn, %{"page_number" => page_number, "page_size" => page_size}) do
     page_number = String.to_integer(page_number)
     page_size = String.to_integer(page_size)
-    FizzBuzz.Services.Pagination.page_fizz_buzz(page_number, page_size)
+    FizzBuzz.Services.Pagination.page_fizz_buzz!(page_number, page_size)
     |> return_fizz_buzz_as_json(conn)
   end
 
@@ -25,9 +25,9 @@ defmodule ApiWeb.FizzBuzzController do
   def put(conn, %{"is_favourite" => is_favourite, "id" => id}) do
     number_id = String.to_integer(id)
     if is_favourite do
-      FizzBuzz.Services.favourite_fizz_buzz(number_id)
+      FizzBuzz.Services.favourite_fizz_buzz!(number_id)
     else
-      FizzBuzz.Services.unfavourite_fizz_buzz(number_id)
+      FizzBuzz.Services.unfavourite_fizz_buzz!(number_id)
     end
     |> return_fizz_buzz_as_json(conn)
   end

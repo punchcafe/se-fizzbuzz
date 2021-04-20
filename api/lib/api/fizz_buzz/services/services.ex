@@ -9,29 +9,29 @@ defmodule FizzBuzz.Services do
         %{:value => FizzBuzz.fizz_buzz(fizz_buzz_id), :id => fizz_buzz_id, :is_favourite => is_favourite}
     end
 
-    def get_fizz_buzz(fizz_buzz_id) when fizz_buzz_id < 1 or fizz_buzz_id > @fizz_buzz_max do
+    def get_fizz_buzz!(fizz_buzz_id) when fizz_buzz_id < 1 or fizz_buzz_id > @fizz_buzz_max do
         raise FizzBuzzNotFoundError
     end
 
-    def get_fizz_buzz(fizz_buzz_id) do
+    def get_fizz_buzz!(fizz_buzz_id) do
         build_fizz_buzz(fizz_buzz_id, is_fizz_buzz_favourite?(fizz_buzz_id))
     end
 
-    def favourite_fizz_buzz(fizz_buzz_id) when fizz_buzz_id < 1 or fizz_buzz_id > @fizz_buzz_max do
+    def favourite_fizz_buzz!(fizz_buzz_id) when fizz_buzz_id < 1 or fizz_buzz_id > @fizz_buzz_max do
         raise FizzBuzzNotFoundError
     end
 
-    def favourite_fizz_buzz(fizz_buzz_id) do
+    def favourite_fizz_buzz!(fizz_buzz_id) do
         # Adds a race condition, but in the very unlikely event can only result in a 500
         if !is_fizz_buzz_favourite?(fizz_buzz_id) do Api.Repo.insert(%Api.Favourite{fizz_buzz_id: fizz_buzz_id}) end
         build_fizz_buzz(fizz_buzz_id, true)
     end
 
-    def unfavourite_fizz_buzz(fizz_buzz_id)  when fizz_buzz_id < 1 or fizz_buzz_id > @fizz_buzz_max do
+    def unfavourite_fizz_buzz!(fizz_buzz_id)  when fizz_buzz_id < 1 or fizz_buzz_id > @fizz_buzz_max do
         raise FizzBuzzNotFoundError
     end
 
-    def unfavourite_fizz_buzz(fizz_buzz_id) do
+    def unfavourite_fizz_buzz!(fizz_buzz_id) do
         # Adds a race condition, but in the very unlikely event can only result in a 500
         if is_fizz_buzz_favourite?(fizz_buzz_id) do Api.Repo.delete(%Api.Favourite{fizz_buzz_id: fizz_buzz_id}) end
         build_fizz_buzz(fizz_buzz_id, false)
