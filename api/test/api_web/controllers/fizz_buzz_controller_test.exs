@@ -227,6 +227,15 @@ defmodule ApiWeb.FizzBuzzControllerTest do
     assert body["is_favourite"] == true
   end
 
+    test "PUT /fizzbuzz/15: should not fail on favouriting same fizzbuzz twice", %{conn: conn} do
+    put(conn, "/fizzbuzz/15", %{is_favourite: true})
+    conn = put(conn, "/fizzbuzz/15", %{is_favourite: true})
+    body = json_response(conn, 200)
+    assert body["value"] == "FizzBuzz"
+    assert body["id"] == 15
+    assert body["is_favourite"] == true
+  end
+
   test "PUT /fizzbuzz/100000000: should favorite fizz buzz at limit", %{conn: conn} do
     conn = put(conn, "/fizzbuzz/100000000", %{is_favourite: true})
     body = json_response(conn, 200)
@@ -271,6 +280,24 @@ defmodule ApiWeb.FizzBuzzControllerTest do
     body = json_response(conn, 200)
     assert body["value"] == "FizzBuzz"
     assert body["id"] == 15
+    assert body["is_favourite"] == false
+  end
+
+  test "PUT /fizzbuzz/35: should not fail on unfavourite not favourited fizz buzz", %{conn: conn} do
+    conn = put(conn, "/fizzbuzz/35", %{is_favourite: false})
+    body = json_response(conn, 200)
+    assert body["value"] == "Buzz"
+    assert body["id"] == 35
+    assert body["is_favourite"] == false
+  end
+
+  test "PUT /fizzbuzz/40: should not fail on unfavourite fizz buzz twice", %{conn: conn} do
+    put(conn, "/fizzbuzz/40", %{is_favourite: true})
+    put(conn, "/fizzbuzz/40", %{is_favourite: false})
+    conn = put(conn, "/fizzbuzz/40", %{is_favourite: false})
+    body = json_response(conn, 200)
+    assert body["value"] == "Buzz"
+    assert body["id"] == 40
     assert body["is_favourite"] == false
   end
 end
