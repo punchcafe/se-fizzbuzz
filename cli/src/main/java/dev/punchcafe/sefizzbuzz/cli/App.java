@@ -13,15 +13,16 @@ import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class App {
 
     public static void main(String[] args) {
-        UserOutputWriter userOutputWriter = new UserOutputWriter();
+        UserOutputWriter userOutputWriter = new UserOutputWriter(System.out);
 
         final var appConfig = AppConfig.builder()
                 .userOutputWriter(userOutputWriter)
-                .userInputReader(new UserInputReader())
+                .userInputReader(new UserInputReader(new Scanner(System.in)))
                 .fizzBuzzClient(Feign.builder()
                         .encoder(new GsonEncoder())
                         .decoder(new GsonDecoder())

@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.List;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -25,12 +26,14 @@ class CalculateTest {
     private FizzBuzzClient fizzBuzzClient;
     private UserOutputWriter userOutputWriter;
     private UserInputReader userInputReader;
+    private Scanner inputScanner;
     private AppProcess appProcess;
 
     @BeforeEach
     void beforeEach() {
-        userOutputWriter = Mockito.spy(new UserOutputWriter());
-        userInputReader = Mockito.mock(UserInputReader.class);
+        inputScanner = Mockito.mock(Scanner.class);
+        userOutputWriter = Mockito.spy(new UserOutputWriter(System.out));
+        userInputReader = new UserInputReader(inputScanner);
         fizzBuzzClient = Mockito.mock(FizzBuzzClient.class);
         final var appConfig = AppConfig.builder()
                 .userOutputWriter(userOutputWriter)

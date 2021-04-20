@@ -4,7 +4,11 @@ import java.util.Scanner;
 
 public class UserInputReader {
 
-    private final Scanner userInput = new Scanner(System.in);
+    private final Scanner userInput;
+
+    public UserInputReader(final Scanner userInput){
+        this.userInput = userInput;
+    }
 
     public String getUserInput(){
         return userInput.nextLine();

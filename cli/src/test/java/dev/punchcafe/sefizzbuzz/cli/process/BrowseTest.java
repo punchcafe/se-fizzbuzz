@@ -13,7 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.List;
+import java.util.Scanner;
 
 import static dev.punchcafe.sefizzbuzz.cli.TestConstants.*;
 import static io.github.jsonSnapshot.SnapshotMatcher.*;
@@ -27,6 +30,7 @@ public class BrowseTest {
     private FizzBuzzClient fizzBuzzClient;
     private UserOutputWriter userOutputWriter;
     private UserInputReader userInputReader;
+    private Scanner inputScanner;
     private AppProcess appProcess;
 
     @BeforeAll
@@ -41,8 +45,9 @@ public class BrowseTest {
 
     @BeforeEach
     void beforeEach() {
-        userOutputWriter = Mockito.spy(new UserOutputWriter());
-        userInputReader = Mockito.mock(UserInputReader.class);
+        inputScanner = Mockito.mock(Scanner.class);
+        userOutputWriter = Mockito.spy(new UserOutputWriter(System.out));
+        userInputReader = new UserInputReader(inputScanner);
         fizzBuzzClient = Mockito.mock(FizzBuzzClient.class);
         final var appConfig = AppConfig.builder()
                 .userOutputWriter(userOutputWriter)
@@ -58,7 +63,7 @@ public class BrowseTest {
         when(fizzBuzzClient.getPage(eq(5), eq(1)))
                 .thenReturn(BROWSE_FIRST_PAGE_RESPONSE);
         // set up user command
-        when(userInputReader.getUserInput())
+        when(inputScanner.nextLine())
                 .thenReturn("exit");
         appProcess.execute(List.of("browse"));
         verify(fizzBuzzClient, times(1)).getPage(5, 1);
@@ -74,7 +79,7 @@ public class BrowseTest {
         when(fizzBuzzClient.getPage(eq(5), eq(1)))
                 .thenReturn(BROWSE_FIRST_PAGE_RESPONSE);
         // set up user command
-        when(userInputReader.getUserInput())
+        when(inputScanner.nextLine())
                 .thenReturn("help", "exit");
         appProcess.execute(List.of("browse"));
         verify(fizzBuzzClient, times(1)).getPage(5, 1);
@@ -92,7 +97,7 @@ public class BrowseTest {
         when(fizzBuzzClient.getPage(eq(5), eq(2)))
                 .thenReturn(BROWSE_SECOND_PAGE_RESPONSE);
         // set up user commands
-        when(userInputReader.getUserInput())
+        when(inputScanner.nextLine())
                 .thenReturn("n", "exit");
         appProcess.execute(List.of("browse"));
 
@@ -111,7 +116,7 @@ public class BrowseTest {
         when(fizzBuzzClient.getPage(eq(5), eq(2)))
                 .thenReturn(BROWSE_SECOND_PAGE_RESPONSE);
         // set up user commands
-        when(userInputReader.getUserInput())
+        when(inputScanner.nextLine())
                 .thenReturn("n", "p", "exit");
         appProcess.execute(List.of("browse"));
 
@@ -129,7 +134,7 @@ public class BrowseTest {
         when(fizzBuzzClient.getPage(eq(5), eq(1)))
                 .thenReturn(BROWSE_FIRST_PAGE_RESPONSE);
         // set up user commands
-        when(userInputReader.getUserInput())
+        when(inputScanner.nextLine())
                 .thenReturn("p", "exit");
         appProcess.execute(List.of("browse"));
 
@@ -148,7 +153,7 @@ public class BrowseTest {
         when(fizzBuzzClient.getPage(eq(7), eq(1)))
                 .thenReturn(BROWSE_DIFFERENT_SIZE_PAGE_RESPONSE);
         // set up user commands
-        when(userInputReader.getUserInput())
+        when(inputScanner.nextLine())
                 .thenReturn("psize 7", "exit");
         appProcess.execute(List.of("browse"));
 
@@ -169,7 +174,7 @@ public class BrowseTest {
         when(fizzBuzzClient.getPage(eq(5), eq(3)))
                 .thenReturn(BROWSE_THIRD_PAGE_RESPONSE);
         // set up user commands
-        when(userInputReader.getUserInput())
+        when(inputScanner.nextLine())
                 .thenReturn("pjump 3", "exit");
         appProcess.execute(List.of("browse"));
 
@@ -188,7 +193,7 @@ public class BrowseTest {
         when(fizzBuzzClient.getPage(eq(5), eq(1)))
                 .thenReturn(BROWSE_FIRST_PAGE_RESPONSE);
         // set up user commands
-        when(userInputReader.getUserInput())
+        when(inputScanner.nextLine())
                 .thenReturn("hello", "exit");
         appProcess.execute(List.of("browse"));
 
@@ -206,7 +211,7 @@ public class BrowseTest {
         when(fizzBuzzClient.getPage(eq(5), eq(1)))
                 .thenThrow(new RuntimeException("Test Generated Exception!"));
         // set up user commands
-        when(userInputReader.getUserInput())
+        when(inputScanner.nextLine())
                 .thenReturn("exit");
         appProcess.execute(List.of("browse"));
 
