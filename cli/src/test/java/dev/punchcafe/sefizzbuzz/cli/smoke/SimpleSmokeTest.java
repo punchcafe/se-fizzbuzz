@@ -29,7 +29,7 @@ public class SimpleSmokeTest {
     }
 
     @Test
-    void requestsCorrectPathForCalculate() {
+    void addCanExecuteCalcualteWithoutCrashing() {
         clientAndServer.when(request()
                 .withMethod("GET")
                 .withPath("/fizzbuzz/15"))
