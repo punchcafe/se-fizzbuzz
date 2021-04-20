@@ -9,7 +9,6 @@ import dev.punchcafe.sefizzbuzz.cli.client.FizzBuzzEntity;
 import dev.punchcafe.sefizzbuzz.cli.config.AppConfig;
 import dev.punchcafe.sefizzbuzz.cli.config.AppFactory;
 import dev.punchcafe.sefizzbuzz.cli.exception.ArgumentNeededException;
-import dev.punchcafe.sefizzbuzz.cli.exception.MissingCommandException;
 import dev.punchcafe.sefizzbuzz.cli.exception.UnknownArgumentException;
 import dev.punchcafe.sefizzbuzz.cli.io.UserInputReader;
 import dev.punchcafe.sefizzbuzz.cli.io.UserOutputWriter;
@@ -20,7 +19,6 @@ import org.mockito.Mockito;
 import java.util.List;
 import java.util.Scanner;
 
-import static dev.punchcafe.sefizzbuzz.cli.constant.MessageConstants.HELP_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
